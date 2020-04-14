@@ -12,15 +12,20 @@ import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.ui.fragment.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
+    @BindView(R.id.main_page_container)
+    BottomNavigationView bottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        BottomNavigationView bottom = findViewById(R.id.main_navigation_view);
+        ButterKnife.bind(this);
+        //bottom = findViewById(R.id.main_navigation_view); //黄油刀不能用来布局变量中，且不能为private或static，因为使用了反射
         bottom.setOnNavigationItemSelectedListener(this);
 
         //可以使用Navigation来做！
