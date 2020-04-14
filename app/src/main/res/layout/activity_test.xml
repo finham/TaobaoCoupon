@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/radio_group"
+        android:layout_alignParentBottom="true">
+
+        <!--android:drawableTop="@drawable/radio_group_home"需要写四个不同图标的，这边只写了一个home-->
+        <RadioButton
+            android:id="@+id/test_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@drawable/navigation_bar_color"
+            android:drawableTop="@drawable/radio_group_home"
+            android:button="@null"
+            android:text="首页"/>
+        <RadioButton
+            android:id="@+id/test_selected"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@drawable/navigation_bar_color"
+            android:drawableTop="@mipmap/select_normal"
+            android:button="@null"
+            android:text="精选"/>
+        <RadioButton
+            android:id="@+id/test_pocket"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@drawable/navigation_bar_color"
+            android:drawableTop="@mipmap/red_packet_normal"
+            android:button="@null"
+            android:text="特惠"/>
+        <RadioButton
+            android:id="@+id/test_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@drawable/navigation_bar_color"
+            android:drawableTop="@mipmap/search_normal"
+            android:button="@null"
+            android:text="搜索"
+            android:gravity="center_horizontal"/>
+    </RadioGroup>
+</RelativeLayout>
