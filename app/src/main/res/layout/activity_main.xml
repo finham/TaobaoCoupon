@@ -12,12 +12,13 @@
         android:layout_height="match_parent" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/main_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         app:itemTextColor="@drawable/navigation_bar_color"
-        app:itemIconTint="drawable/navigation_bar_color"
+        app:itemIconTint="@drawable/navigation_bar_color"
         app:menu="@menu/my_navigation_items" />
     <!--@drawable/navigation_bar_color需要手打，智能提示没有起作用！-->
 </RelativeLayout>

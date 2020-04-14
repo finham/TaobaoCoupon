@@ -9,7 +9,7 @@
         android:icon="@mipmap/select_normal"
         android:title="@string/text_selected" />
     <item
-        android:id="@+id/red_packet"
+        android:id="@+id/pocket"
         android:icon="@mipmap/red_packet_normal"
         android:title="@string/text_red_packet" />
     <item
