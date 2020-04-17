@@ -15,9 +15,14 @@ public class LogUtils {
     private static final int ERROR_LEVEL = 1;
     private static int currentLevel = VERBOSE_LEVEL;
 
-    public static void v(Class clazz, String log) {
+    public static void v(Class clazz, String log) { //final类不可被继承
         if (currentLevel >= VERBOSE_LEVEL) Log.v(clazz.getSimpleName(), log);
     }
+
+    //把Class换成Object
+//    public static void v(Object clazz, String log) {
+//        if (currentLevel >= VERBOSE_LEVEL) Log.v(clazz.getClass().getSimpleName(), log);
+//    }
 
     public static void d(Class clazz, String log) {
         if (currentLevel >= DEBUG_LEVEL) Log.d(clazz.getSimpleName(), log);
