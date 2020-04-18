@@ -18,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
@@ -27,12 +28,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     SelectedFragment selectedFragment;
     PocketFragment pocketFragment;
     SearchFragment searchFragment;
+    private Unbinder mBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        mBinder = ButterKnife.bind(this);
 
         homeFragment = new HomeFragment();
         selectedFragment = new SelectedFragment();
@@ -60,5 +62,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.main_page_container, target);
         transaction.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBinder != null) mBinder.unbind();
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.finham.taobaocoupon.model.Api;
 import com.finham.taobaocoupon.model.domain.Category;
 import com.finham.taobaocoupon.presenter.IHomePresenter;
+import com.finham.taobaocoupon.utils.LogUtils;
 import com.finham.taobaocoupon.utils.RetrofitManager;
 import com.finham.taobaocoupon.view.IHomeCallback;
 
@@ -21,7 +22,7 @@ import retrofit2.Retrofit;
  * Time: 16:44
  */
 public class HomePresenterImpl implements IHomePresenter {
-
+    private IHomeCallback mCallback;
     @Override
     public void getCategories() {
         //通过Retrofit单例获取到一个retrofit对象
@@ -44,11 +45,12 @@ public class HomePresenterImpl implements IHomePresenter {
                 if (code == HttpURLConnection.HTTP_OK) {
                     //请求成功
                     Category category = response.body();
-//                    LogUtils.d(HomePresenterImpl.class, category.toString());
-                    Log.d("123",category.toString());
+                    LogUtils.d(HomePresenterImpl.class, category.toString());
+                    if(mCallback!=null){
+                        mCallback.onCategoriesLoaded(category);//从这边传到HomeFragment的onCategoriesLoaded()中了！
+                    }
                 } else {
                     //请求失败
-//                    LogUtils.i(HomePresenterImpl.class, "请求错误");
                     Log.d("123","请求错误");
                 }
             }
@@ -62,13 +64,20 @@ public class HomePresenterImpl implements IHomePresenter {
         });
     }
 
+    /**
+     * 因为只有HomeFragment用到category，所以只使用一个callback就好了。
+     * 如果有多个页面都要用到category，那么就要保证界面上的统一更新，就要用【集合】保存各个界面的callback，一通知的时候就for循环全部更新。
+     * 例如之前的喜马拉雅，一个地方改变播放状态，那么其他地方也要跟着改。OK大概明白了，后面有时间再把喜马拉雅做一下也行~
+     * @param callback
+     */
     @Override
     public void registerCallback(IHomeCallback callback) {
-
+        this.mCallback = callback;
     }
 
     @Override
     public void unregisterCallback(IHomeCallback callback) {
-
+        //取消注册的话置空就好了
+        mCallback = null;
     }
 }

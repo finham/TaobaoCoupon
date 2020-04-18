@@ -21,6 +21,7 @@ android {
         }
     }
 
+    //https://stackoverflow.com/questions/59448845/no-static-method-metafactory 没加下面这个，第15讲Retrofit一直报错
     compileOptions{
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
