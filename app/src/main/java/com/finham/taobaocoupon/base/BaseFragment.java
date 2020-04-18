@@ -37,7 +37,7 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.base_fragment_layout, container, false);
+        View rootView = loadRootView(inflater, container);
         mFrameLayout = rootView.findViewById(R.id.base_container);
         loadState(inflater, container);
 
@@ -46,6 +46,16 @@ public abstract class BaseFragment extends Fragment {
         initPresenter();
         loadData();
         return rootView;
+    }
+
+    /**
+     * 把rootView提取出来，如果子类要改根布局的话重写该方法就可以了！
+     * @param inflater
+     * @param container
+     * @return
+     */
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.base_fragment_layout, container, false);
     }
 
     /**
