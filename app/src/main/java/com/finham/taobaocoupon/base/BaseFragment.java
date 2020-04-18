@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.finham.taobaocoupon.R;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -34,22 +35,37 @@ public abstract class BaseFragment extends Fragment {
 
     private State currentState = State.NONE;
 
+    @OnClick(R.id.tv_error)
+    public void retry(){
+        //在错误页面点击重新加载
+        onRetryClick();
+    }
+
+    /**
+     * 如果子类需要知道网络错误后的点击操作，那么就重写该方法
+     */
+    protected void onRetryClick() {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = loadRootView(inflater, container);
         mFrameLayout = rootView.findViewById(R.id.base_container);
         loadState(inflater, container);
-
         mBinder = ButterKnife.bind(this, rootView);
         initView(rootView); //把View传递过去，用得上就用，用不上也没事
+        //创建Presenter
         initPresenter();
+        //加载数据
         loadData();
         return rootView;
     }
 
     /**
      * 把rootView提取出来，如果子类要改根布局的话重写该方法就可以了！
+     *
      * @param inflater
      * @param container
      * @return
@@ -89,6 +105,18 @@ public abstract class BaseFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_empty, container, false);
     }
 
+    protected View loadLoadingView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_loading, container, false);
+    }
+
+    //甚至这个方法也可以简写不要，不过还是跟着老师来吧。
+    protected View loadSuccessView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        int resId = getRootViewResId();
+        return inflater.inflate(resId, container, false);
+    }
+
+    protected abstract int getRootViewResId();
+
     /**
      * 子类通过该方法来切换不同状态对应的页面
      *
@@ -111,18 +139,6 @@ public abstract class BaseFragment extends Fragment {
         mEmptyView.setVisibility(currentState == State.EMPTY ? View.INVISIBLE : View.GONE);
     }
 
-    /**
-     * 加载页面
-     * 子类可选择重写
-     *
-     * @param inflater
-     * @param container
-     * @return
-     */
-    protected View loadLoadingView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_loading, container, false);
-    }
-
     protected void initView(View view) {
     }
 
@@ -139,18 +155,8 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void initPresenter() {
-        //创建Presenter
     }
 
     protected void loadData() {
-        //加载数据
     }
-
-    //甚至这个方法也可以简写不要，不过还是跟着老师来吧。
-    protected View loadSuccessView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
-        int resId = getRootViewResId();
-        return inflater.inflate(resId, container, false);
-    }
-
-    protected abstract int getRootViewResId();
 }

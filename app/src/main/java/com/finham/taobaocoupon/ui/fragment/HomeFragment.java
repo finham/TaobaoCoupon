@@ -107,4 +107,12 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.base_home_fragment_layout, container, false);
     }
+
+    @Override
+    protected void onRetryClick() {
+        //重新加载category
+        if (homePresenter != null) {
+            homePresenter.getCategories();
+        }
+    }
 }
