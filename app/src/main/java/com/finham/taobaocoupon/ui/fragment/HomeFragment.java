@@ -32,7 +32,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     private HomePagerAdapter mAdapter;
 
 
-//    @Nullable
+//    @Nullable 这个提取出来统一放到BaseFragment中
 //    @Override
 //    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -108,6 +108,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
         return inflater.inflate(R.layout.base_home_fragment_layout, container, false);
     }
 
+    /*选择在HomeFragment中重写该方法*/
     @Override
     protected void onRetryClick() {
         //重新加载category

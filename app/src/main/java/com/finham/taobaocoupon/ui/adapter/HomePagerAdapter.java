@@ -34,7 +34,9 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return new HomePagerFragment();
+        Category.DataBean bean = mCaregoryList.get(position);
+        HomePagerFragment fragment = HomePagerFragment.newInstance(bean);
+        return fragment;
     }
 
     @Override
