@@ -1,11 +1,14 @@
 package com.finham.taobaocoupon.presenter;
 
+import com.finham.taobaocoupon.base.IBasePresenter;
+import com.finham.taobaocoupon.view.ICategoryPagerCallback;
+
 /**
  * User: Fin
  * Date: 2020/4/19
  * Time: 10:52
  */
-public interface ICategoryPagerPresenter<ICategoryPagerCallback> {
+public interface ICategoryPagerPresenter extends IBasePresenter<ICategoryPagerCallback> {
     /**
      * 根据分类id获取内容
      *
