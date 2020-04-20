@@ -8,7 +8,9 @@ import com.finham.taobaocoupon.utils.UrlUtils;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -24,24 +26,28 @@ import retrofit2.Retrofit;
 public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     //使用Map来管理分类页面，id为int，page也为int
     private Map<Integer, Integer> pagesInfo = new HashMap<>();
-    private static final int DEFAULT_PAGE =1;
+    private static final int DEFAULT_PAGE = 1;
 
     //这样写不够完美，我们要将所有实现细节隐藏
     //private static CategoryPagerPresenterImpl sCategoryPagerPresenter = new CategoryPagerPresenterImpl();
     //所以要改成这样：
     private static ICategoryPagerPresenter sCategoryPagerPresenter = new CategoryPagerPresenterImpl();
-    private CategoryPagerPresenterImpl(){
+
+    private CategoryPagerPresenterImpl() {
 
     }
 
     //这边使用的是饿汉式，线程安全。不过由于这边不需要考虑线程的问题，所以用懒汉式的话效率可能会更高一点
-    public static ICategoryPagerPresenter getInstance(){
+    public static ICategoryPagerPresenter getInstance() {
         return sCategoryPagerPresenter;
     }
 
 
     @Override
     public void getContentByCategoryId(int categoryId) {
+        for (ICategoryPagerCallback callback : callbacks) {
+            callback.onContentLoading(categoryId);
+        }
         //根据分类id去加载内容
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
@@ -50,25 +56,48 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
             targetPage = DEFAULT_PAGE;
             pagesInfo.put(categoryId, targetPage);
         }
-        String url = UrlUtils.createHomePagerUrl(categoryId,targetPage);
+        String url = UrlUtils.createHomePagerUrl(categoryId, targetPage);
 
         Call<HomePagerContent> task = api.getHomePagerContent(url);
         task.enqueue(new Callback<HomePagerContent>() {
             @Override
             public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
                 int code = response.code();
-                if(code == HttpURLConnection.HTTP_OK){
+                if (code == HttpURLConnection.HTTP_OK) {
                     HomePagerContent pagerContent = response.body();
-                }else {
-                    //TODO：错误处理
+                    //把数据反映到UI上
+                    updateUIByContent(pagerContent, categoryId);
+                } else {
+                    handleError(categoryId);
                 }
             }
 
             @Override
             public void onFailure(Call<HomePagerContent> call, Throwable t) {
-                //TODO
+                handleError(categoryId);
             }
         });
+    }
+
+    private void handleError(int categoryId) {
+        for (ICategoryPagerCallback callback : callbacks) {
+            callback.onContentError(categoryId);
+        }
+    }
+
+    /**
+     * @param pagerContent
+     * @param categoryId   通过categoryId来判断是哪个页面更新UI，这是很重要的区分点
+     */
+    private void updateUIByContent(HomePagerContent pagerContent, int categoryId) {
+        //通知UI层更新数据
+        for (ICategoryPagerCallback callback : callbacks) {
+            if (callback == null || pagerContent.getData().size() == 0) {
+                callback.onContentEmpty(categoryId);
+            } else {
+                callback.onContentLoaded(pagerContent.getData(), categoryId);
+            }
+        }
     }
 
     @Override
@@ -81,13 +110,19 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
 
     }
 
+    private List<ICategoryPagerCallback> callbacks = new ArrayList<>();
+
     @Override
     public void registerViewCallback(ICategoryPagerCallback callback) {
-
+        //注册页面的回调时，如果没有的话就把callback加入
+        if (!callbacks.contains(callback)) {
+            callbacks.add(callback);
+        }
     }
 
     @Override
     public void unregisterCallback(ICategoryPagerCallback callback) {
-
+        //取消注册时就移除掉
+        callbacks.remove(callback);
     }
 }

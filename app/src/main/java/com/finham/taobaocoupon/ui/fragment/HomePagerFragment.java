@@ -22,6 +22,7 @@ import java.util.List;
 public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback {
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
+    private int mMaterialId;
 
     /*将category传进来，然后创建对应的HomePagerFragment！*/
     public static HomePagerFragment newInstance(Category.DataBean bean) {
@@ -54,31 +55,36 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     protected void loadData() {  //loadData()是在loadView()之后的
         String title = getArguments().getString(Constants.HOME_PAGER_KEY_TITLE);
-        int materialId = getArguments().getInt(Constants.HOME_PAGER_KEY_MATERIAL_ID);
+        mMaterialId = getArguments().getInt(Constants.HOME_PAGER_KEY_MATERIAL_ID);
 
         if (mCategoryPagerPresenter != null) {
-            mCategoryPagerPresenter.getContentByCategoryId(materialId);
+            mCategoryPagerPresenter.getContentByCategoryId(mMaterialId);
         }
     }
 
     @Override
-    public void onContentLoaded(List<HomePagerContent> contents) {
-
+    public void onContentLoaded(List<HomePagerContent.DataBean> contents, int categoryId) {
+        if(mMaterialId != categoryId) return;
+        changeState(State.SUCCESS);
     }
 
     @Override
     public void onContentLoading(int categoryId) {
-
+        if(mMaterialId != categoryId) return;
+        changeState(State.LOADING);
     }
 
     @Override
     public void onContentError(int categoryId) {
-
+        if(mMaterialId != categoryId) return;
+        //网络错误！
+        changeState(State.ERROR);
     }
 
     @Override
     public void onContentEmpty(int categoryId) {
-
+        if(mMaterialId != categoryId) return;
+        changeState(State.EMPTY);
     }
 
     @Override
@@ -92,12 +98,12 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     }
 
     @Override
-    public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents) {
+    public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents, int categoryId) {
 
     }
 
     @Override
-    public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
+    public void onLooperListLoaded(List<HomePagerContent.DataBean> contents, int categoryId) {
 
     }
 

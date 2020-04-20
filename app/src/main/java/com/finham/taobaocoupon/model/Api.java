@@ -12,6 +12,10 @@ import retrofit2.http.Url;
  * Date: 2020/4/17
  * Time: 18:17
  */
+
+/**
+ * 对应Retrofit的Api类
+ */
 public interface Api {
     @GET("discovery/categories") //最前面不要加/，在baseUrl中加就好了
     Call<Category> getCategories();

@@ -48,7 +48,6 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     protected void initView(View view) {
 //        super.initView(view);
         mTabLayout.setupWithViewPager(mViewPager);
-        //TODO:给ViewPager设置适配器
         mAdapter = new HomePagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);
     }

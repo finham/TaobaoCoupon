@@ -15,7 +15,7 @@ public interface ICategoryPagerCallback {
      *
      * @param contents
      */
-    void onContentLoaded(List<HomePagerContent> contents);
+    void onContentLoaded(List<HomePagerContent.DataBean> contents, int categoryId);
 
     //数据正在加载
     void onContentLoading(int categoryId);
@@ -42,11 +42,11 @@ public interface ICategoryPagerCallback {
      * 加载更多时成功加载了
      * @param contents
      */
-    void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents);
+    void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents, int categoryId);
 
     /**
      * 加载轮播图
      * @param contents
      */
-    void onLooperListLoaded(List<HomePagerContent.DataBean> contents);
+    void onLooperListLoaded(List<HomePagerContent.DataBean> contents, int categoryId);
 }
