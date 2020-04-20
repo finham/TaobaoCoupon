@@ -62,7 +62,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
         //那如果有需要用到父类实现的代码，那就得保留
         //super.initPresenter();
         homePresenter = new HomePresenterImpl();
-        homePresenter.registerCallback(this);
+        homePresenter.registerViewCallback(this);
     }
 
     /**

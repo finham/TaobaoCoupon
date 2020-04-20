@@ -5,7 +5,7 @@ package com.finham.taobaocoupon.presenter;
  * Date: 2020/4/19
  * Time: 10:52
  */
-public interface ICategoryPagerPresenter {
+public interface ICategoryPagerPresenter<ICategoryPagerCallback> {
     /**
      * 根据分类id获取内容
      *
@@ -21,4 +21,5 @@ public interface ICategoryPagerPresenter {
     void loadMore(int categoryId);
 
     void reload(int categoryId);
+
 }

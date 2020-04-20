@@ -5,7 +5,7 @@ package com.finham.taobaocoupon.base;
  * Date: 2020/4/19
  * Time: 23:10
  */
-public interface IBaseCallback {
+public interface IBaseCallback  {
     void onError();
     void onLoading();
     void onEmpty();

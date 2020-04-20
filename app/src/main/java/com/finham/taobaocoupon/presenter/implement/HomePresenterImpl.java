@@ -77,7 +77,7 @@ public class HomePresenterImpl implements IHomePresenter {
      * @param callback
      */
     @Override
-    public void registerCallback(IHomeCallback callback) {
+    public void registerViewCallback(IHomeCallback callback) {
         this.mCallback = callback;
     }
 
