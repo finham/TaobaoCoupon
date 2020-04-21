@@ -46,7 +46,7 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     @Override
     public void getContentByCategoryId(int categoryId) {
         for (ICategoryPagerCallback callback : callbacks) {
-            callback.onContentLoading(categoryId);
+            callback.onLoading();
         }
         //根据分类id去加载内容
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
@@ -81,7 +81,8 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
 
     private void handleError(int categoryId) {
         for (ICategoryPagerCallback callback : callbacks) {
-            callback.onContentError(categoryId);
+            if (callback.getCategoryId() == categoryId)
+                callback.onError();
         }
     }
 
@@ -92,10 +93,11 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     private void updateUIByContent(HomePagerContent pagerContent, int categoryId) {
         //通知UI层更新数据
         for (ICategoryPagerCallback callback : callbacks) {
-            if (callback == null || pagerContent.getData().size() == 0) {
-                callback.onContentEmpty(categoryId);
-            } else {
-                callback.onContentLoaded(pagerContent.getData(), categoryId);
+            if (callback.getCategoryId() == categoryId) {
+                if (callback == null || pagerContent.getData().size() == 0)
+                    callback.onEmpty();
+                 else
+                    callback.onContentLoaded(pagerContent.getData());
             }
         }
     }
