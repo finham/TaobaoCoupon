@@ -8,6 +8,6 @@
     <color name="colorTabSelected">#ffffff</color>
     <color name="colorTabNormal">#aaffffff</color>
     <color name="colorTmall">#D0021B</color>
-    <color name="colorPageBg">#EFEEEE</color>
+    <color name="colorPagerBg">#EFEEEE</color>
     <color name="colorEEEEEE">#EFEEEE</color>
 </resources>

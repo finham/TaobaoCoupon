@@ -1,8 +1,10 @@
 package com.finham.taobaocoupon.ui.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +55,13 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     protected void initView(View view) {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.top = 8;    //这里的单位是px，后面我们把它转为dp
+                outRect.bottom = 8;
+            }
+        });
         mAdapter = new HomePagerRecyclerViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
     }

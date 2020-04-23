@@ -33,7 +33,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/goods_off_prise"
+            android:id="@+id/goods_off_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_tag_bg"
@@ -55,14 +55,14 @@
                 android:textColor="@color/colorPrimary" />
 
             <TextView
-                android:id="@+id/goods_after_off_prise"
+                android:id="@+id/goods_after_off_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="19.80"
                 android:textColor="@color/colorPrimary" />
 
             <TextView
-                android:id="@+id/goods_original_prise"
+                android:id="@+id/goods_original_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
