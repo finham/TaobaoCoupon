@@ -32,6 +32,7 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     //private static CategoryPagerPresenterImpl sCategoryPagerPresenter = new CategoryPagerPresenterImpl();
     //所以要改成这样：
     private static ICategoryPagerPresenter sCategoryPagerPresenter = new CategoryPagerPresenterImpl();
+    private List<HomePagerContent.DataBean> mData;
 
     private CategoryPagerPresenterImpl() {
 
@@ -91,13 +92,18 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
      * @param categoryId   通过categoryId来判断是哪个页面更新UI，这是很重要的区分点
      */
     private void updateUIByContent(HomePagerContent pagerContent, int categoryId) {
+        List<HomePagerContent.DataBean> mData = pagerContent.getData();
         //通知UI层更新数据
         for (ICategoryPagerCallback callback : callbacks) {
             if (callback.getCategoryId() == categoryId) {
                 if (callback == null || pagerContent.getData().size() == 0)
                     callback.onEmpty();
-                 else
-                    callback.onContentLoaded(pagerContent.getData());
+                else {
+                    int size = mData.size();
+                    List<HomePagerContent.DataBean> looperList = mData.subList(size - 5, size); //拿到轮播图的数据，最后五条
+                    callback.onLooperListLoaded(looperList); //把数据传递过去~
+                    callback.onContentLoaded(mData);
+                }
             }
         }
     }
