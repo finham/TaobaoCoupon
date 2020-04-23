@@ -3,16 +3,22 @@ package com.finham.taobaocoupon.ui.fragment;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseFragment;
 import com.finham.taobaocoupon.model.domain.Category;
 import com.finham.taobaocoupon.model.domain.HomePagerContent;
 import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
+import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
 
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * User: Fin
@@ -23,6 +29,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int mMaterialId;
+    @BindView(R.id.home_pager_recyclerview)
+    public RecyclerView mRecyclerView;
+    private HomePagerRecyclerViewAdapter mAdapter;
 
     /*将category传进来，然后创建对应的HomePagerFragment！*/
     public static HomePagerFragment newInstance(Category.DataBean bean) {
@@ -43,7 +52,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initView(View view) {
-        changeState(State.SUCCESS);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        mAdapter = new HomePagerRecyclerViewAdapter();
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -65,25 +76,23 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     public void onContentLoaded(List<HomePagerContent.DataBean> contents) {
 //        if(mMaterialId != categoryId) return;
+        mAdapter.setData(contents);
         changeState(State.SUCCESS);
     }
 
     @Override
     public void onLoading() {
-//        if(mMaterialId != categoryId) return;
         changeState(State.LOADING);
     }
 
     @Override
     public void onError() {
-//        if(mMaterialId != categoryId) return;
         //网络错误！
         changeState(State.ERROR);
     }
 
     @Override
     public void onEmpty() {
-//        if(mMaterialId != categoryId) return;
         changeState(State.EMPTY);
     }
 
