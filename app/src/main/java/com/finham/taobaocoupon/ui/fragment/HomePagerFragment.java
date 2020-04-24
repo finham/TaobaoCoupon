@@ -21,7 +21,10 @@ import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
 import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.utils.DensityUtils;
+import com.finham.taobaocoupon.utils.LogUtils;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.List;
 
@@ -46,6 +49,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     public TextView mTextView;
     @BindView(R.id.looper_point_container)
     public LinearLayout mPointContainer;
+    @BindView(R.id.home_pager_refresh)
+    public TwinklingRefreshLayout mTwinklingRefreshLayout;
 
     private HomePagerRecyclerViewAdapter mAdapter;
     private LooperAdapter mLooperAdapter;
@@ -83,6 +88,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         //VP的适配器
         mLooperAdapter = new LooperAdapter();
         mViewPager.setAdapter(mLooperAdapter);
+        //设置Refresh相关内容
+        mTwinklingRefreshLayout.setEnableRefresh(false);//上拉刷新取消掉
+        mTwinklingRefreshLayout.setEnableLoadmore(true);//下拉加载更多保留
     }
 
     @Override
@@ -108,6 +116,20 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+
+        mTwinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                LogUtils.d(getClass(),"触发了loadMore");
+                //TODO:加载更多内容
+                mTwinklingRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTwinklingRefreshLayout.finishLoadmore();//结束加载更多的动画
+                    }
+                },2000);
             }
         });
     }
