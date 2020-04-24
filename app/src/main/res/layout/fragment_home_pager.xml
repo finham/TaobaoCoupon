@@ -6,12 +6,29 @@
     android:background="@color/colorPagerBg"
     android:orientation="vertical">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/looper"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:overScrollMode="never"
-        android:layout_marginBottom="14dp"/>
+        android:layout_marginBottom="14dp">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/looper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+        
+        <LinearLayout
+            android:id="@+id/looper_point_container"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentBottom="true">
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <!--添加标题。切图中轮播图和RV之间有一个标题，这里使用Drawable：shape_title_flag.xml来实现-->
     <include layout="@layout/include_title_part"/>

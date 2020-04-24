@@ -3,6 +3,7 @@ package com.finham.taobaocoupon.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
 import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
 import com.finham.taobaocoupon.utils.Constants;
+import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
 
 import java.util.List;
@@ -42,6 +44,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @BindView(R.id.home_pager_title) //重启就能找到id了= =
     public TextView mTextView;
+    @BindView(R.id.looper_point_container)
+    public LinearLayout mPointContainer;
 
     private HomePagerRecyclerViewAdapter mAdapter;
     private LooperAdapter mLooperAdapter;
@@ -79,7 +83,6 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         //VP的适配器
         mLooperAdapter = new LooperAdapter();
         mViewPager.setAdapter(mLooperAdapter);
-        mViewPager.setOffscreenPageLimit();
     }
 
     @Override
@@ -147,6 +150,18 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
         mLooperAdapter.setData(contents);
+        //在数据加载好了后添加小圆点。因为这是跟UI相关的代码，所以在View层写是没关系的。MVP中的View
+        mPointContainer.removeAllViews();
+        for (int i = 0; i < contents.size(); i++) {
+            View pointer = new View(getContext());
+            //单位为px像素单位，要转为dp。你直接填切图上的8肯定是不对的，因为单位不同。
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtils.dp2px(getContext(),8), DensityUtils.dp2px(getContext(),8));
+            params.leftMargin = DensityUtils.dp2px(getContext(),5);
+            params.rightMargin = DensityUtils.dp2px(getContext(),5);
+            pointer.setLayoutParams(params);
+            pointer.setBackground(getContext().getDrawable(R.drawable.shape_indicator_point_selected));
+            mPointContainer.addView(pointer);
+        }
     }
 
     @Override
