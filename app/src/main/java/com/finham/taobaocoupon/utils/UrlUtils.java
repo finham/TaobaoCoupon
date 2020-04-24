@@ -10,7 +10,7 @@ public class UrlUtils {
         return "discovery/" + materialId + "/" + page;
     }
 
-    public static String getCoverPath() {
-        return "https:";
+    public static String getCoverPath(String url) {
+        return "https:" + url;
     }
 }

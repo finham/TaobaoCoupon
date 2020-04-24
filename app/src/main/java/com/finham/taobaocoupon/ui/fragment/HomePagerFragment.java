@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseFragment;
@@ -15,6 +16,7 @@ import com.finham.taobaocoupon.model.domain.HomePagerContent;
 import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
 import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
+import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
 import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
 
@@ -31,9 +33,14 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int mMaterialId;
+
     @BindView(R.id.home_pager_recyclerview)
     public RecyclerView mRecyclerView;
+    @BindView(R.id.looper)
+    public ViewPager mViewPager;
+
     private HomePagerRecyclerViewAdapter mAdapter;
+    private LooperAdapter mLooperAdapter;
 
     /*将category传进来，然后创建对应的HomePagerFragment！*/
     public static HomePagerFragment newInstance(Category.DataBean bean) {
@@ -62,13 +69,17 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
                 outRect.bottom = 8;
             }
         });
+        //RV的适配器
         mAdapter = new HomePagerRecyclerViewAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        //VP的适配器
+        mLooperAdapter = new LooperAdapter();
+        mViewPager.setAdapter(mLooperAdapter);
     }
 
     @Override
     protected void initPresenter() {
-        mCategoryPagerPresenter = CategoryPagerPresenterImpl.getInstance();
+        mCategoryPagerPresenter = CategoryPagerPresenterImpl.getInstance(); //通过接口获取实例，隐藏内部实现！妙
         mCategoryPagerPresenter.registerViewCallback(this);
     }
 
@@ -85,8 +96,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     public void onContentLoaded(List<HomePagerContent.DataBean> contents) {
 //        if(mMaterialId != categoryId) return;
-        mAdapter.setData(contents);
         changeState(State.SUCCESS);
+        mAdapter.setData(contents);
     }
 
     @Override
@@ -127,7 +138,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
-
+        mLooperAdapter.setData(contents);
     }
 
     @Override

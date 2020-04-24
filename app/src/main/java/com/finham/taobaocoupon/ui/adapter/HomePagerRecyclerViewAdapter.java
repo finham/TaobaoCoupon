@@ -47,7 +47,7 @@ public class HomePagerRecyclerViewAdapter extends RecyclerView.Adapter<HomePager
         HomePagerContent.DataBean dataBean = data.get(position);
         holder.title.setText(dataBean.getTitle());
         Glide.with(holder.itemView.getContext())
-                .load(UrlUtils.getCoverPath() + dataBean.getPict_url())
+                .load(UrlUtils.getCoverPath(dataBean.getPict_url()))
                 .into(holder.cover);
 
         Resources resources = holder.itemView.getContext().getResources();

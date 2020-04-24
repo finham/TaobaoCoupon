@@ -47,7 +47,9 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     @Override
     public void getContentByCategoryId(int categoryId) {
         for (ICategoryPagerCallback callback : callbacks) {
-            callback.onLoading();
+            if(callback.getCategoryId() == categoryId) { //少了这个if判断导致每个界面加载了却都变成onLoading！很不细心也很不注意
+                callback.onLoading();
+            }
         }
         //根据分类id去加载内容
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
