@@ -47,7 +47,7 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     @Override
     public void getContentByCategoryId(int categoryId) {
         for (ICategoryPagerCallback callback : callbacks) {
-            if(callback.getCategoryId() == categoryId) { //少了这个if判断导致每个界面加载了却都变成onLoading！很不细心也很不注意
+            if (callback.getCategoryId() == categoryId) {  //少了这个if判断导致每个界面加载了却都变成onLoading！很不细心啊蔡芳汉！
                 callback.onLoading();
             }
         }

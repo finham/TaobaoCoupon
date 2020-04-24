@@ -3,6 +3,7 @@ package com.finham.taobaocoupon.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +39,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     public RecyclerView mRecyclerView;
     @BindView(R.id.looper)
     public ViewPager mViewPager;
+
+    @BindView(R.id.home_pager_title) //重启就能找到id了= =
+    public TextView mTextView;
 
     private HomePagerRecyclerViewAdapter mAdapter;
     private LooperAdapter mLooperAdapter;
@@ -75,6 +79,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         //VP的适配器
         mLooperAdapter = new LooperAdapter();
         mViewPager.setAdapter(mLooperAdapter);
+        mViewPager.setOffscreenPageLimit();
     }
 
     @Override
@@ -90,6 +95,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
         if (mCategoryPagerPresenter != null) {
             mCategoryPagerPresenter.getContentByCategoryId(mMaterialId);
+        }
+        if (mTextView != null) {
+            mTextView.setText(title);
         }
     }
 
