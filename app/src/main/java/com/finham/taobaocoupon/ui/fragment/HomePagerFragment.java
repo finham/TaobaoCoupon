@@ -86,6 +86,45 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     }
 
     @Override
+    protected void initListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                int realPosition = position % mLooperAdapter.getDataSize();
+                //主要在该方法中要切换小圆点指示器
+                changePointIndicator(realPosition);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    /**
+     * 切换小圆点指示器
+     *
+     * @param realPosition
+     */
+    private void changePointIndicator(int realPosition) {
+        for (int i = 0; i < mPointContainer.getChildCount(); i++) {
+            View point = mPointContainer.getChildAt(i);
+            if (i == realPosition) {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_selected);
+            } else {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+            }
+        }
+    }
+
+    @Override
     protected void initPresenter() {
         mCategoryPagerPresenter = CategoryPagerPresenterImpl.getInstance(); //通过接口获取实例，隐藏内部实现！妙
         mCategoryPagerPresenter.registerViewCallback(this);
@@ -152,17 +191,24 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mLooperAdapter.setData(contents);
         //在数据加载好了后添加小圆点。因为这是跟UI相关的代码，所以在View层写是没关系的。MVP中的View
         mPointContainer.removeAllViews();
+        //GradientDrawable selected = (GradientDrawable) getContext().getDrawable(R.drawable.shape_indicator_point_selected);
+        //GradientDrawable normal = (GradientDrawable) getContext().getDrawable(R.drawable.shape_indicator_point_normal);
+
         //中间点%size不一定为0，所以不一定为第一个，所以改写一下：
         mViewPager.setCurrentItem(Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % contents.size());
         for (int i = 0; i < contents.size(); i++) {
-            View pointer = new View(getContext());
+            View point = new View(getContext());
             //单位为px像素单位，要转为dp。你直接填切图上的8肯定是不对的，因为单位不同。
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtils.dp2px(getContext(), 8), DensityUtils.dp2px(getContext(), 8));
             params.leftMargin = DensityUtils.dp2px(getContext(), 5);
             params.rightMargin = DensityUtils.dp2px(getContext(), 5);
-            pointer.setLayoutParams(params);
-            pointer.setBackground(getContext().getDrawable(R.drawable.shape_indicator_point_selected));
-            mPointContainer.addView(pointer);
+            point.setLayoutParams(params);
+            if (i == 0) {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_selected);
+            } else {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+            }
+            mPointContainer.addView(point);
         }
     }
 

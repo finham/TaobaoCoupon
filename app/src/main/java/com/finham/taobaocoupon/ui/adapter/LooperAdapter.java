@@ -53,6 +53,10 @@ public class LooperAdapter extends PagerAdapter {
         return imageView;
     }
 
+    public int getDataSize(){
+        return mData.size();
+    }
+
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);

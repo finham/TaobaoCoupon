@@ -55,12 +55,19 @@ public abstract class BaseFragment extends Fragment {
         mFrameLayout = rootView.findViewById(R.id.base_container);
         loadState(inflater, container);
         mBinder = ButterKnife.bind(this, rootView);
-        initView(rootView); //把View传递过去，用得上就用，用不上也没事
+        //把View传递过去，用得上就用，用不上也没事
+        initView(rootView);
+        //创建监听
+        initListener();
         //创建Presenter
         initPresenter();
         //加载数据
         loadData();
         return rootView;
+    }
+
+    protected void initListener(){
+
     }
 
     /**
