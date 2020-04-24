@@ -152,12 +152,13 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mLooperAdapter.setData(contents);
         //在数据加载好了后添加小圆点。因为这是跟UI相关的代码，所以在View层写是没关系的。MVP中的View
         mPointContainer.removeAllViews();
+        mViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
         for (int i = 0; i < contents.size(); i++) {
             View pointer = new View(getContext());
             //单位为px像素单位，要转为dp。你直接填切图上的8肯定是不对的，因为单位不同。
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtils.dp2px(getContext(),8), DensityUtils.dp2px(getContext(),8));
-            params.leftMargin = DensityUtils.dp2px(getContext(),5);
-            params.rightMargin = DensityUtils.dp2px(getContext(),5);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtils.dp2px(getContext(), 8), DensityUtils.dp2px(getContext(), 8));
+            params.leftMargin = DensityUtils.dp2px(getContext(), 5);
+            params.rightMargin = DensityUtils.dp2px(getContext(), 5);
             pointer.setLayoutParams(params);
             pointer.setBackground(getContext().getDrawable(R.drawable.shape_indicator_point_selected));
             mPointContainer.addView(pointer);

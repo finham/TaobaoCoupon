@@ -38,6 +38,8 @@ public class LooperAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        //返回Integer.MAX_VALUE会造成下标越界，需要处理
+        int realPosition = position % mData.size(); //求余数
         //其实所有布局代码(xml)都会映射为Java类，这里演示使用Java代码来布局
         ImageView imageView = new ImageView(container.getContext());
         //将ImageView扩大宽度至和VP一样宽
@@ -45,7 +47,7 @@ public class LooperAdapter extends PagerAdapter {
         imageView.setLayoutParams(params);
         //设置拉伸形式
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        String url = mData.get(position).getPict_url();
+        String url = mData.get(realPosition).getPict_url();
         Glide.with(container.getContext()).load(UrlUtils.getCoverPath(url)).into(imageView);
         container.addView(imageView);
         return imageView;
@@ -58,7 +60,7 @@ public class LooperAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mData.size();
+        return Integer.MAX_VALUE;
     }
 
     @Override
