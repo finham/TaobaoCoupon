@@ -152,7 +152,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mLooperAdapter.setData(contents);
         //在数据加载好了后添加小圆点。因为这是跟UI相关的代码，所以在View层写是没关系的。MVP中的View
         mPointContainer.removeAllViews();
-        mViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
+        //中间点%size不一定为0，所以不一定为第一个，所以改写一下：
+        mViewPager.setCurrentItem(Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2) % contents.size());
         for (int i = 0; i < contents.size(); i++) {
             View pointer = new View(getContext());
             //单位为px像素单位，要转为dp。你直接填切图上的8肯定是不对的，因为单位不同。
