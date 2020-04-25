@@ -3,6 +3,7 @@ package com.finham.taobaocoupon.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,6 +54,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @BindView(R.id.home_pager_refresh)
     public TwinklingRefreshLayout mTwinklingRefreshLayout;
 
+    @BindView(R.id.home_pager_parent)
+    public LinearLayout mHomePagerParent;
+
     private HomePagerRecyclerViewAdapter mAdapter;
     private LooperAdapter mLooperAdapter;
 
@@ -75,6 +79,21 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initView(View view) {
+        //先拿到ViewTree的观察者，然后添加一个全局的布局的监听
+        mHomePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() { //该方法会频繁调用的
+                int height = mHomePagerParent.getMeasuredHeight();
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mRecyclerView.getLayoutParams();
+                params.height = height;
+                mRecyclerView.setLayoutParams(params);
+                //不想让这个方法频繁调用
+                if(height!=0){
+                    mHomePagerParent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
