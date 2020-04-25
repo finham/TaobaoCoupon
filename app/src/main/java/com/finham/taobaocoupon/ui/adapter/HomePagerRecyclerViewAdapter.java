@@ -74,6 +74,14 @@ public class HomePagerRecyclerViewAdapter extends RecyclerView.Adapter<HomePager
         notifyDataSetChanged();
     }
 
+    //OOP直接创建
+    public void addData(List<HomePagerContent.DataBean> contents) {
+        int startPosition = data.size();
+        data.addAll(contents);
+        //更新UI
+        notifyItemRangeChanged(startPosition, contents.size());
+    }
+
     public class ItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.goods_cover)
         public ImageView cover;

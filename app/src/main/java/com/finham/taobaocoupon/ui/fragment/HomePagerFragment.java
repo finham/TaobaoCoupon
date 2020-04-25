@@ -212,7 +212,11 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents) {
-
+        //添加到RecyclerView数据的底部
+        mAdapter.addData(contents);
+        //添加进去后要结束refresh的动画
+        if (mTwinklingRefreshLayout != null)
+            mTwinklingRefreshLayout.finishLoadmore();
     }
 
     @Override
