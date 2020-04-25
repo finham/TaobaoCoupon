@@ -122,14 +122,17 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mTwinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
-                LogUtils.d(getClass(),"触发了loadMore");
-                //TODO:加载更多内容
-                mTwinklingRefreshLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTwinklingRefreshLayout.finishLoadmore();//结束加载更多的动画
-                    }
-                },2000);
+                LogUtils.d(getClass(), "触发了loadMore");
+                //加载更多内容
+                if (mCategoryPagerPresenter != null) {
+                    mCategoryPagerPresenter.loadMore(mMaterialId);
+                }
+//                mTwinklingRefreshLayout.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mTwinklingRefreshLayout.finishLoadmore();//结束加载更多的动画
+//                    }
+//                },2000);
             }
         });
     }
