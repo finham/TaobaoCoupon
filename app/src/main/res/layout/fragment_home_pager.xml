@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+        <com.finham.taobaocoupon.ui.custom.TaobaoNestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -57,7 +57,7 @@
                     android:layout_marginTop="11dp"/>
 
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </com.finham.taobaocoupon.ui.custom.TaobaoNestedScrollView>
 
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
