@@ -10,7 +10,7 @@ public class UrlUtils {
         return "discovery/" + materialId + "/" + page;
     }
 
-    public static String getCoverPath(String url) {
-        return "https:" + url;
+    public static String getCoverPath(String url, int size) {
+        return "https:" + url + "_" + size + "x" + size + ".jpg"; //这里是小写的x
     }
 }

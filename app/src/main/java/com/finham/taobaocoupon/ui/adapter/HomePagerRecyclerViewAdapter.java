@@ -46,10 +46,13 @@ public class HomePagerRecyclerViewAdapter extends RecyclerView.Adapter<HomePager
         //holder也要使用ButterKnife！= =第一次用
         HomePagerContent.DataBean dataBean = data.get(position);
         holder.title.setText(dataBean.getTitle());
+        ViewGroup.LayoutParams params = holder.cover.getLayoutParams();
+        int width = params.width; //淘宝得宽高相同才能显示出来
+        int height = params.height;
+        int coverSize = (width > height ? width : height) / 2;
         Glide.with(holder.itemView.getContext())
-                .load(UrlUtils.getCoverPath(dataBean.getPict_url()))
+                .load(UrlUtils.getCoverPath(dataBean.getPict_url(), coverSize))
                 .into(holder.cover);
-
         Resources resources = holder.itemView.getContext().getResources();
         float result = Float.parseFloat(dataBean.getZk_final_price()) - (float) (dataBean.getCoupon_amount());
 

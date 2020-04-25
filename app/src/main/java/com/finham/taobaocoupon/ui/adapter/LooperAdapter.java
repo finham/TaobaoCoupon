@@ -48,12 +48,16 @@ public class LooperAdapter extends PagerAdapter {
         //设置拉伸形式
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         String url = mData.get(realPosition).getPict_url();
-        Glide.with(container.getContext()).load(UrlUtils.getCoverPath(url)).into(imageView);
+        int width = container.getMeasuredWidth();
+        int height = container.getMeasuredHeight();
+        int coverSize = (width > height ? width : height) / 2;
+
+        Glide.with(container.getContext()).load(UrlUtils.getCoverPath(url, coverSize)).into(imageView);
         container.addView(imageView);
         return imageView;
     }
 
-    public int getDataSize(){
+    public int getDataSize() {
         return mData.size();
     }
 
