@@ -22,6 +22,7 @@ import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
 import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.LogUtils;
+import com.finham.taobaocoupon.utils.ToastUtils;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -202,12 +203,14 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLoadMoreError() {
-
+        ToastUtils.showToast("网络异常");
+        if (mTwinklingRefreshLayout != null) mTwinklingRefreshLayout.finishLoadmore();
     }
 
     @Override
     public void onLoadMoreEmpty() {
-
+        ToastUtils.showToast("没有更多商品");
+        if (mTwinklingRefreshLayout != null) mTwinklingRefreshLayout.finishLoadmore();
     }
 
     @Override
@@ -215,8 +218,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         //添加到RecyclerView数据的底部
         mAdapter.addData(contents);
         //添加进去后要结束refresh的动画
-        if (mTwinklingRefreshLayout != null)
+        if (mTwinklingRefreshLayout != null) //还是得判空，因为加载时用户可能会返回桌面等等的。虽然不影响用户体验，但是你还是得避免
             mTwinklingRefreshLayout.finishLoadmore();
+        ToastUtils.showToast("更新了"+contents.size()+"件商品");
     }
 
     @Override
