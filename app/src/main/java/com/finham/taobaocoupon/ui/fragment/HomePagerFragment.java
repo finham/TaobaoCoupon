@@ -128,12 +128,14 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
                 if (mCategoryPagerPresenter != null) {
                     mCategoryPagerPresenter.loadMore(mMaterialId);
                 }
-//                mTwinklingRefreshLayout.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mTwinklingRefreshLayout.finishLoadmore();//结束加载更多的动画
-//                    }
-//                },2000);
+            }
+        });
+
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRecyclerView.getMeasuredHeight();
+                mRecyclerView.getHeight();
             }
         });
     }
