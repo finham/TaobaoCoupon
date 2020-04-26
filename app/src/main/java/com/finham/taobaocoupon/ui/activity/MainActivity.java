@@ -1,14 +1,13 @@
 package com.finham.taobaocoupon.ui.activity;
 
-import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.finham.taobaocoupon.R;
+import com.finham.taobaocoupon.base.BaseActivity;
 import com.finham.taobaocoupon.base.BaseFragment;
 import com.finham.taobaocoupon.ui.fragment.HomeFragment;
 import com.finham.taobaocoupon.ui.fragment.PocketFragment;
@@ -17,11 +16,9 @@ import com.finham.taobaocoupon.ui.fragment.SelectedFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "MainActivity";
+public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+//    private static final String TAG = "MainActivity";
     @BindView(R.id.main_navigation_view) //黄油刀不能用来布局变量中，且不能为private或static，因为使用了反射
             BottomNavigationView bottom;
 
@@ -29,21 +26,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     SelectedFragment selectedFragment;
     PocketFragment pocketFragment;
     SearchFragment searchFragment;
-    private Unbinder mBinder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mBinder = ButterKnife.bind(this);
-
+    protected void initView() {
         homeFragment = new HomeFragment();
         selectedFragment = new SelectedFragment();
         pocketFragment = new PocketFragment();
         searchFragment = new SearchFragment();
+    }
 
+    @Override
+    protected void initListener() {
         bottom.setOnNavigationItemSelectedListener(this);
         bottom.setSelectedItemId(R.id.home);
+    }
+
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -78,9 +78,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         transaction.commit();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBinder != null) mBinder.unbind();
-    }
+    //将一些公共的代码移到BaseActivity
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if (mBinder != null) mBinder.unbind();
+//    }
 }

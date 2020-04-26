@@ -40,7 +40,8 @@ public class AutoLoopViewPager extends ViewPager {
         public void run() {
             //先拿到当前的位置
             int i = getCurrentItem();
-            setCurrentItem(i++);
+            i++;
+            setCurrentItem(i); //这边不能直接i++传进来啊
             if (isLooping) postDelayed(this, mInterval);  //三秒后再执行这个动作~
             // 注意post并没有开启子线程哦！有start的才算开子线程。
         }

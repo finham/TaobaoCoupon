@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
  */
 public class HomePagerRecyclerViewAdapter extends RecyclerView.Adapter<HomePagerRecyclerViewAdapter.ItemHolder> {
     List<HomePagerContent.DataBean> data = new ArrayList<>();
+    private onItemClickListener mItemClickListener;
 
     @NonNull
     @Override
@@ -102,6 +103,20 @@ public class HomePagerRecyclerViewAdapter extends RecyclerView.Adapter<HomePager
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(view -> {
+                if (mItemClickListener != null) {
+                    mItemClickListener.onItemClick(data.get(getLayoutPosition())); //具体参考我的笔记
+                }
+            });
         }
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener){
+        this.mItemClickListener = listener;
+    }
+
+    public interface onItemClickListener{
+        //RecyclerView列表内容的点击事件
+        void onItemClick(HomePagerContent.DataBean dataBean);
     }
 }

@@ -1,5 +1,6 @@
 package com.finham.taobaocoupon.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.finham.taobaocoupon.model.domain.Category;
 import com.finham.taobaocoupon.model.domain.HomePagerContent;
 import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
+import com.finham.taobaocoupon.ui.activity.TicketActivity;
 import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
 import com.finham.taobaocoupon.ui.custom.AutoLoopViewPager;
@@ -137,6 +139,17 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initListener() {
+        mAdapter.setOnItemClickListener(dataBean -> {
+            //RecyclerView内容被点击
+            ToastUtils.showToast(dataBean.getTitle());
+            handleItemClick(dataBean);
+        });
+
+        mLooperAdapter.setOnLooperClickListener(item -> {
+            //轮播图被点击
+            handleItemClick(item);
+        });
+
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -179,6 +192,10 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
                 mRecyclerView.getHeight();
             }
         });
+    }
+
+    private void handleItemClick(HomePagerContent.DataBean item) {
+        startActivity(new Intent(requireActivity(), TicketActivity.class));
     }
 
     /**
