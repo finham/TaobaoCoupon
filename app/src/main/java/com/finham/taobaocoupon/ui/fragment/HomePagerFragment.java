@@ -198,7 +198,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         String url = item.getClick_url();
         String cover = item.getPict_url();
         ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
-        ticketPresenter.getTicket(title,url,cover);
+        ticketPresenter.getTicket(title, url, cover);
         startActivity(new Intent(requireActivity(), TicketActivity.class));
     }
 
