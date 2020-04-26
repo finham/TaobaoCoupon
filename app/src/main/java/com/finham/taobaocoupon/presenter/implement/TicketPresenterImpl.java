@@ -5,6 +5,7 @@ import com.finham.taobaocoupon.model.domain.Ticket;
 import com.finham.taobaocoupon.model.domain.TicketParams;
 import com.finham.taobaocoupon.presenter.ITicketPresenter;
 import com.finham.taobaocoupon.utils.RetrofitManager;
+import com.finham.taobaocoupon.utils.UrlUtils;
 import com.finham.taobaocoupon.view.ITicketCallback;
 
 import java.net.HttpURLConnection;
@@ -23,17 +24,18 @@ public class TicketPresenterImpl implements ITicketPresenter {
     @Override
     public void getTicket(String title, String url, String coverImage) {
         //获取淘口令
+        String ticketUrl = UrlUtils.getTicketUrl(url);
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
-        TicketParams params = new TicketParams(url,title);
+        TicketParams params = new TicketParams(ticketUrl, title);
         Call<Ticket> task = api.getTicketContent(params);
         task.enqueue(new Callback<Ticket>() {
             @Override
             public void onResponse(Call<Ticket> call, Response<Ticket> response) {
                 int code = response.code();
-                if(code == HttpURLConnection.HTTP_OK){
+                if (code == HttpURLConnection.HTTP_OK) {
                     Ticket body = response.body();
-                }else {
+                } else {
 
                 }
             }
