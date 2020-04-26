@@ -19,7 +19,7 @@ import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
 import androidx.core.view.ViewCompat;
 
-import com.lcodecore.tkrefreshlayout.Footer.BallPulseView;
+import com.lcodecore.tkrefreshlayout.footer.BallPulseView;
 import com.lcodecore.tkrefreshlayout.header.GoogleDotView;
 import com.lcodecore.tkrefreshlayout.processor.AnimProcessor;
 import com.lcodecore.tkrefreshlayout.processor.IDecorator;

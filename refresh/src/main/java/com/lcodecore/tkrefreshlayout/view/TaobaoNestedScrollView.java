@@ -1,4 +1,4 @@
-package com.finham.taobaocoupon.ui.custom;
+package com.lcodecore.tkrefreshlayout.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * User: Fin
@@ -16,6 +17,7 @@ import androidx.core.widget.NestedScrollView;
 public class TaobaoNestedScrollView extends NestedScrollView {
     private int height = 100;
     private int originScroll = 0;
+    private RecyclerView mRecyclerView;
 
     public TaobaoNestedScrollView(@NonNull Context context) {
         super(context);
@@ -53,6 +55,9 @@ public class TaobaoNestedScrollView extends NestedScrollView {
     @Override
     public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
         super.onNestedPreScroll(target, dx, dy, consumed, type);
+        if(target instanceof RecyclerView){
+            mRecyclerView = (RecyclerView) target;
+        }
         if(originScroll<height) {
             scrollBy(dx, dy);
             consumed[0] = dx;
@@ -66,5 +71,20 @@ public class TaobaoNestedScrollView extends NestedScrollView {
         //只要你NestedScrollView一有移动，那么这个方法就会调用且有值的变化
         this.originScroll = t;
         super.onScrollChanged(l, t, oldl, oldt);
+    }
+
+    /**
+     * 判断是否滑动到了底部
+     * @return
+     */
+    public boolean isToBottom() {
+        if (mRecyclerView != null) {
+            //正数是向下滑，负数是向上滑
+            boolean canScrollMore = mRecyclerView.canScrollVertically(1); //能否滑动
+            boolean isBottom = !canScrollMore;
+//            Log.d("TAG","canScrollMore -->"+canScrollMore);
+            return isBottom;
+        }
+        return false;
     }
 }

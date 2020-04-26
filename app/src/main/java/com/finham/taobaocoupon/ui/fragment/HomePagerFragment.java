@@ -20,7 +20,6 @@ import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
 import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
-import com.finham.taobaocoupon.ui.custom.TaobaoNestedScrollView;
 import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.LogUtils;
@@ -28,6 +27,7 @@ import com.finham.taobaocoupon.utils.ToastUtils;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.lcodecore.tkrefreshlayout.view.TaobaoNestedScrollView;
 
 import java.util.List;
 
