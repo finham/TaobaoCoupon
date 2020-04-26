@@ -20,6 +20,7 @@ import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
 import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
+import com.finham.taobaocoupon.ui.custom.AutoLoopViewPager;
 import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.LogUtils;
@@ -46,7 +47,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @BindView(R.id.home_pager_recyclerview)
     public RecyclerView mRecyclerView;
     @BindView(R.id.looper)
-    public ViewPager mViewPager;
+    public AutoLoopViewPager mViewPager;
 
     @BindView(R.id.home_pager_title) //重启就能找到id了= =
     public TextView mTextView;
@@ -74,8 +75,20 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         return fragment;
     }
 
-    //继承于BaseFragment，那么那些变量也就都继承过来了。
+    @Override
+    public void onResume() {
+        super.onResume();
+        //可见时候开始loop
+        mViewPager.startLoop();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mViewPager.stopLoop();
+    }
+
+    //继承于BaseFragment，那么那些变量也就都继承过来了。
     @Override
     protected int getRootViewResId() {
         return R.layout.fragment_home_pager;
