@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private static final String TAG = "MainActivity";
     @BindView(R.id.main_navigation_view) //黄油刀不能用来布局变量中，且不能为private或static，因为使用了反射
             BottomNavigationView bottom;
+
     private HomeFragment homeFragment;
     SelectedFragment selectedFragment;
     PocketFragment pocketFragment;
@@ -57,10 +58,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true; //return true表示消费这个事件，图标才会真正跟着切换过去
     }
 
+    //上一次显示的Fragment
+    private BaseFragment mLastFragment = null;
+
     private void switchToFragment(BaseFragment target) {
+        //修改为add+hide的方式来控制Fragment
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.main_page_container, target);
+        if (!target.isAdded()) {
+            transaction.add(R.id.main_page_container, target);
+        } else {
+            transaction.show(target);
+        }
+        if (mLastFragment != null) {
+            transaction.hide(mLastFragment);
+        }
+        mLastFragment = target;
+        //transaction.replace(R.id.main_page_container, target);
         transaction.commit();
     }
 

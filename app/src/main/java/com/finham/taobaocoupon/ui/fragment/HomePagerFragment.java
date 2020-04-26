@@ -87,6 +87,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mHomePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() { //该方法会频繁调用的
+                if (mHeaderContainer == null) {
+                    return;
+                }
                 int headerHeight = mHeaderContainer.getMeasuredHeight();
                 mTaobaoNestedScrollView.setHeight(headerHeight);
                 int height = mHomePagerParent.getMeasuredHeight();
@@ -94,7 +97,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
                 params.height = height;
                 mRecyclerView.setLayoutParams(params);
                 //不想让这个方法频繁调用
-                if(height!=0){
+                if (height != 0) {
                     mHomePagerParent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             }
@@ -247,7 +250,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         //添加进去后要结束refresh的动画
         if (mTwinklingRefreshLayout != null) //还是得判空，因为加载时用户可能会返回桌面等等的。虽然不影响用户体验，但是你还是得避免
             mTwinklingRefreshLayout.finishLoadmore();
-        ToastUtils.showToast("更新了"+contents.size()+"件商品");
+        ToastUtils.showToast("更新了" + contents.size() + "件商品");
     }
 
     @Override
