@@ -20,6 +20,7 @@ import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
 import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
+import com.finham.taobaocoupon.ui.custom.TaobaoNestedScrollView;
 import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.LogUtils;
@@ -56,7 +57,10 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @BindView(R.id.home_pager_parent)
     public LinearLayout mHomePagerParent;
-
+    @BindView(R.id.tb_scroller)
+    public TaobaoNestedScrollView mTaobaoNestedScrollView;
+    @BindView(R.id.header_container)
+    public LinearLayout mHeaderContainer;
     private HomePagerRecyclerViewAdapter mAdapter;
     private LooperAdapter mLooperAdapter;
 
@@ -83,6 +87,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mHomePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() { //该方法会频繁调用的
+                int headerHeight = mHeaderContainer.getMeasuredHeight();
+                mTaobaoNestedScrollView.setHeight(headerHeight);
                 int height = mHomePagerParent.getMeasuredHeight();
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mRecyclerView.getLayoutParams();
                 params.height = height;

@@ -12,8 +12,10 @@
         android:layout_height="match_parent">
 
         <com.finham.taobaocoupon.ui.custom.TaobaoNestedScrollView
+            android:id="@+id/tb_scroller"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -21,33 +23,40 @@
                 android:orientation="vertical"
                 android:gravity="center">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/header_container"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_marginBottom="14dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/looper"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:overScrollMode="never" />
+                        android:layout_height="150dp"
+                        android:layout_marginBottom="14dp">
 
-                    <LinearLayout
-                        android:id="@+id/looper_point_container"
-                        android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="10dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_alignParentBottom="true">
+                        <LinearLayout
+                            android:id="@+id/looper_point_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                </RelativeLayout>
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/looper"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:overScrollMode="never" />
 
-                <!--添加标题。切图中轮播图和RV之间有一个标题，这里使用Drawable：shape_title_flag.xml来实现-->
-                <include layout="@layout/include_title_part"/>
+                    </RelativeLayout>
 
+                    <!--添加标题。切图中轮播图和RV之间有一个标题，这里使用Drawable：shape_title_flag.xml来实现-->
+                    <include layout="@layout/include_title_part" />
+
+                </LinearLayout>
                 <!--overScrollMode设置滑动到边缘时无效果模式，就是超出内容长度时没有那种阴影！-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/home_pager_recyclerview"
