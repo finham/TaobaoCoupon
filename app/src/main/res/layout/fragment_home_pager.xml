@@ -54,7 +54,10 @@
                     </RelativeLayout>
 
                     <!--添加标题。切图中轮播图和RV之间有一个标题，这里使用Drawable：shape_title_flag.xml来实现-->
-                    <include layout="@layout/include_title_part" />
+                    <include layout="@layout/include_title_part"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="11dp"/>
 
                 </LinearLayout>
                 <!--overScrollMode设置滑动到边缘时无效果模式，就是超出内容长度时没有那种阴影！-->
@@ -62,8 +65,7 @@
                     android:id="@+id/home_pager_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"
-                    android:layout_marginTop="11dp"/>
+                    android:overScrollMode="never" />
 
             </LinearLayout>
         </com.lcodecore.tkrefreshlayout.view.TaobaoNestedScrollView>
