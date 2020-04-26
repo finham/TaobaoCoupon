@@ -31,19 +31,16 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     //这样写不够完美，我们要将所有实现细节隐藏
     //private static CategoryPagerPresenterImpl sCategoryPagerPresenter = new CategoryPagerPresenterImpl();
     //所以要改成这样：
-    private static ICategoryPagerPresenter sCategoryPagerPresenter = new CategoryPagerPresenterImpl();
+    //private static ICategoryPagerPresenter sCategoryPagerPresenter = new CategoryPagerPresenterImpl();
     private List<HomePagerContent.DataBean> mData;
     private Integer mCurrentPage;
 
-    private CategoryPagerPresenterImpl() {
-
-    }
-
     //这边使用的是饿汉式，线程安全。不过由于这边不需要考虑线程的问题，所以用懒汉式的话效率可能会更高一点
-    public static ICategoryPagerPresenter getInstance() {
-        return sCategoryPagerPresenter;
-    }
+    //public static ICategoryPagerPresenter getInstance() {
+        //return sCategoryPagerPresenter;
+    //}
 
+//    private CategoryPagerPresenterImpl(){ }
 
     @Override
     public void getContentByCategoryId(int categoryId) {

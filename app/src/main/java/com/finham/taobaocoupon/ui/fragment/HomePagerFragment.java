@@ -18,7 +18,7 @@ import com.finham.taobaocoupon.base.BaseFragment;
 import com.finham.taobaocoupon.model.domain.Category;
 import com.finham.taobaocoupon.model.domain.HomePagerContent;
 import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
-import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
+import com.finham.taobaocoupon.presenter.ITicketPresenter;
 import com.finham.taobaocoupon.ui.activity.TicketActivity;
 import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
@@ -26,6 +26,7 @@ import com.finham.taobaocoupon.ui.custom.AutoLoopViewPager;
 import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.LogUtils;
+import com.finham.taobaocoupon.utils.PresenterManager;
 import com.finham.taobaocoupon.utils.ToastUtils;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -145,10 +146,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
             handleItemClick(dataBean);
         });
 
-        mLooperAdapter.setOnLooperClickListener(item -> {
-            //轮播图被点击
-            handleItemClick(item);
-        });
+        //轮播图被点击
+        mLooperAdapter.setOnLooperClickListener(this::handleItemClick);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -195,6 +194,11 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     }
 
     private void handleItemClick(HomePagerContent.DataBean item) {
+        String title = item.getTitle();
+        String url = item.getClick_url();
+        String cover = item.getPict_url();
+        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
+        ticketPresenter.getTicket(title,url,cover);
         startActivity(new Intent(requireActivity(), TicketActivity.class));
     }
 
@@ -216,7 +220,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initPresenter() {
-        mCategoryPagerPresenter = CategoryPagerPresenterImpl.getInstance(); //通过接口获取实例，隐藏内部实现！妙
+//        mCategoryPagerPresenter = CategoryPagerPresenterImpl.getInstance(); //通过接口获取实例，隐藏内部实现！妙
+        mCategoryPagerPresenter = PresenterManager.getInstance().getCategoryPagerPresenter();
         mCategoryPagerPresenter.registerViewCallback(this);
     }
 
