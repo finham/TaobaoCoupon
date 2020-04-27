@@ -22,7 +22,7 @@ import retrofit2.Retrofit;
  */
 public class TicketPresenterImpl implements ITicketPresenter {
     @Override
-    public void getTicket(String title, String url, String coverImage) {
+    public void getTicket(String title, String url, String coverImage) { //传这三个参数是因为要放在页面上，同时对于获取淘口令也是必要的
         //获取淘口令
         String ticketUrl = UrlUtils.getTicketUrl(url);
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
