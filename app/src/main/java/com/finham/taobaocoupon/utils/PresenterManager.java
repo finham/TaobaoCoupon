@@ -31,6 +31,7 @@ public class PresenterManager {
 
     private ITicketPresenter mTicketPresenter;
 
+    //单例
     private static final PresenterManager ourInstance = new PresenterManager();
 
     public static PresenterManager getInstance() {

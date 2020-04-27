@@ -18,7 +18,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-//    private static final String TAG = "MainActivity";
     @BindView(R.id.main_navigation_view) //黄油刀不能用来布局变量中，且不能为private或static，因为使用了反射
             BottomNavigationView bottom;
 
@@ -33,6 +32,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         selectedFragment = new SelectedFragment();
         pocketFragment = new PocketFragment();
         searchFragment = new SearchFragment();
+    }
+
+    @Override
+    protected void initPresenter() {
+
     }
 
     @Override

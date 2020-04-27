@@ -22,7 +22,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         mBinder = ButterKnife.bind(this);
         initView();
         initListener();
+        initPresenter();
     }
+
+    protected abstract void initPresenter();
 
     /**
      * 需要的时候自己复写
@@ -38,5 +41,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (mBinder != null) mBinder.unbind();
+        release();
+    }
+
+    /**
+     * 子类如果有需要释放资源的话重写该方法
+     */
+    protected void release() {
     }
 }
