@@ -142,7 +142,6 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     protected void initListener() {
         mAdapter.setOnItemClickListener(dataBean -> {
             //RecyclerView内容被点击
-            ToastUtils.showToast(dataBean.getTitle());
             handleItemClick(dataBean);
         });
 

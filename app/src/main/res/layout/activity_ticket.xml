@@ -12,10 +12,11 @@
 
         <ImageView
             android:id="@+id/ticket_back_press"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:padding="10dp"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
             android:src="@mipmap/back" />
 
         <TextView

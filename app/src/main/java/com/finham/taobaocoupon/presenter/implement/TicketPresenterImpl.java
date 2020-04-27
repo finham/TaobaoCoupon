@@ -19,6 +19,7 @@ import retrofit2.Retrofit;
  * User: Fin
  * Date: 2020/4/26
  * Time: 22:22
+ * 还挺复杂的。这个老师考虑得好多面。。
  */
 public class TicketPresenterImpl implements ITicketPresenter {
     private ITicketCallback mCallback;
@@ -92,6 +93,7 @@ public class TicketPresenterImpl implements ITicketPresenter {
     public void registerViewCallback(ITicketCallback callback) {
         //因为这里只有一个页面需要通知状态，所以一个就行了。
         // 如果是多个界面，那么就用集合保存，跟category一样的。
+        this.mCallback = callback;
         if (mCurrent != LoadState.NONE) {
             //说明状态已经改变了，更细UI。用来处理getTicket非常快的情况
             if (mCurrent == LoadState.SUCCESS) {
@@ -102,7 +104,6 @@ public class TicketPresenterImpl implements ITicketPresenter {
                 onTicketLoading();
             }
         }
-        this.mCallback = callback;
     }
 
     @Override

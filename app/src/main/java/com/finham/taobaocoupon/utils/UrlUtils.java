@@ -14,6 +14,10 @@ public class UrlUtils {
         return "https:" + url + "_" + size + "x" + size + ".jpg"; //这里是小写的x
     }
 
+    public static String getCoverPath(String url) {
+        return "https:" + url ;
+    }
+
     public static String getTicketUrl(String url) {
         if (url.startsWith("http") || url.startsWith("https")) {
             return url;
