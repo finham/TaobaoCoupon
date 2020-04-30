@@ -40,11 +40,11 @@
             android:src="@mipmap/no_image" />
 
 
-<!--        <com.sunofbeaches.taobaounion.ui.custom.LoadingView-->
-<!--            android:id="@+id/ticket_cover_loading"-->
-<!--            android:layout_width="33dp"-->
-<!--            android:layout_height="33dp"-->
-<!--            android:layout_centerInParent="true" />-->
+        <com.finham.taobaocoupon.ui.custom.LoadingView
+            android:id="@+id/ticket_cover_loading"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_centerInParent="true" />
 
 
         <TextView

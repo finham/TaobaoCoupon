@@ -39,9 +39,9 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
     @BindView(R.id.ticket_copy_or_open_btn)
     public TextView mOpenOrCopyBtn; //打开按钮
 
-//
-//    @BindView(R.id.ticket_cover_loading)
-//    public View loadingView;
+
+    @BindView(R.id.ticket_cover_loading)
+    public View loadingView;
 
 
     @BindView(R.id.ticket_load_retry)
@@ -77,6 +77,9 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
 
     @Override
     public void onTicketLoaded(String coverImage, Ticket ticket) {
+        if (retryLoadText != null) {
+            retryLoadText.setVisibility(View.GONE);
+        }
         if (mCover != null && !TextUtils.isEmpty(coverImage)) { //这个方法既能判断空也能判断长度，实现也很简单可以直接进去看
             //int targetWidth = mCover.getLayoutParams().width / 2;
             LogUtils.d(TicketActivity.class, "coverImage -->" + coverImage);
@@ -88,22 +91,33 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
             LogUtils.d(TicketActivity.class,"taokouling-->"+ticket.getData().getTbk_tpwd_create_response().getData().getModel());
             mTicketCode.setText(ticket.getData().getTbk_tpwd_create_response().getData().getModel());
         }
+        if (loadingView != null) {
+            loadingView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onError() {
-
+        if (loadingView != null) {
+            loadingView.setVisibility(View.GONE);
+        }
+        if (retryLoadText != null) {
+            retryLoadText.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onLoading() {
-
+        if (loadingView != null) {
+            loadingView.setVisibility(View.VISIBLE);
+        }
+        if (retryLoadText != null) {
+            retryLoadText.setVisibility(View.GONE);
+        }
     }
 
-    @Override
-    public void onEmpty() {
-
-    }
+    @Override //因为这个界面没做EMPTY状态，所以这个就不写了
+    public void onEmpty() { }
 
     @Override
     protected void release() {

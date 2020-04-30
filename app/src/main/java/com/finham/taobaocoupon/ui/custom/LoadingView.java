@@ -47,7 +47,7 @@ public class LoadingView extends AppCompatImageView {
                 invalidate(); //证明…错误; 使站不住脚; 使无效; 使作废;
                 //使用布尔值来控制是否要继续旋转
                 if(getVisibility() == View.VISIBLE && isRotated) {
-                    postDelayed(this, 100); //形成循环= = 所有View都有post()方法
+                    postDelayed(this, 10); //形成循环= = 所有View都有post()方法
                 }else {
                     removeCallbacks(this);
                 }
@@ -65,7 +65,7 @@ public class LoadingView extends AppCompatImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.rotate(mDegree, getWidth() / 2, getHeight() / 2); //这句得放在super前面，不然不生效
         super.onDraw(canvas);
-        canvas.rotate(10, getWidth() / 2, getHeight() / 2);
     }
 }
