@@ -22,7 +22,7 @@ public class UrlUtils {
         if (url.startsWith("http") || url.startsWith("https")) {
             return url;
         } else {
-            return "https" + url;
+            return "https:" + url;
         }
     }
 }

@@ -79,11 +79,13 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
     public void onTicketLoaded(String coverImage, Ticket ticket) {
         if (mCover != null && !TextUtils.isEmpty(coverImage)) { //这个方法既能判断空也能判断长度，实现也很简单可以直接进去看
             //int targetWidth = mCover.getLayoutParams().width / 2;
-            LogUtils.d(TicketActivity.class,"coverImage -->"+coverImage);
+            LogUtils.d(TicketActivity.class, "coverImage -->" + coverImage);
             Glide.with(this).load(UrlUtils.getCoverPath(coverImage)).into(mCover);
         }
 
-        if(ticket!=null && ticket.getData().getTbk_tpwd_create_response()!=null){
+        Ticket.DataBeanX.TbkTpwdCreateResponseBean tbk_tpwd_create_response = ticket.getData().getTbk_tpwd_create_response();
+        if (ticket != null && tbk_tpwd_create_response != null) {
+            LogUtils.d(TicketActivity.class,"taokouling-->"+ticket.getData().getTbk_tpwd_create_response().getData().getModel());
             mTicketCode.setText(ticket.getData().getTbk_tpwd_create_response().getData().getModel());
         }
     }
