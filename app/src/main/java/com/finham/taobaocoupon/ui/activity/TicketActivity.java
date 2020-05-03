@@ -1,5 +1,10 @@
 package com.finham.taobaocoupon.ui.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
@@ -15,8 +20,11 @@ import com.finham.taobaocoupon.model.domain.Ticket;
 import com.finham.taobaocoupon.presenter.ITicketPresenter;
 import com.finham.taobaocoupon.utils.LogUtils;
 import com.finham.taobaocoupon.utils.PresenterManager;
+import com.finham.taobaocoupon.utils.ToastUtils;
 import com.finham.taobaocoupon.utils.UrlUtils;
 import com.finham.taobaocoupon.view.ITicketCallback;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 
@@ -84,10 +92,20 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
 
     @Override
     protected void initListener() {
-        backPress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
+        backPress.setOnClickListener(view -> finish());
+        mOpenOrCopyBtn.setOnClickListener(view -> {
+            //复制淘口令，如果有安装淘宝则打开淘宝
+            String code = mTicketCode.getText().toString().trim();
+            ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData data = ClipData.newPlainText("taobao_ticket_code", code);//第一个参数为label标签
+            Objects.requireNonNull(cm).setPrimaryClip(data);
+            //判断有没有淘宝
+            if (isTaobaoInstalled) {
+                Intent taobaoIntent = new Intent();
+                taobaoIntent.setComponent(new ComponentName("com.taobao.taobao", "com.taobao.tao.welcome.Welcome"));
+                startActivity(taobaoIntent);
+            } else {
+                ToastUtils.showToast("淘口令已复制！");
             }
         });
     }
