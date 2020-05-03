@@ -1,5 +1,7 @@
 package com.finham.taobaocoupon.ui.activity;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -25,6 +27,7 @@ import butterknife.BindView;
  */
 public class TicketActivity extends BaseActivity implements ITicketCallback {
     ITicketPresenter ticketPresenter;
+    private boolean isTaobaoInstalled = false;
 
     @BindView(R.id.ticket_cover)
     public ImageView mCover; //封面图片
@@ -53,6 +56,25 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
         if (ticketPresenter != null) {
             ticketPresenter.registerViewCallback(this);  //实现接口并实现回调方法
         }
+        //判断是否安装淘宝 act=android.intent.action.main | cat = [android.intent.category.LAUNCHER]
+        //flag = 0x10200000 | cmp =com.taobao.taobao/com.taobao.tao.welcome.Welcome 可得包名为com.taobao.taobao
+        //= = 其实直接打开手机看应用详细信息就能获取到了，不用这么麻烦
+        //检查是否安装有淘宝
+        PackageManager packageManager = getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo("com.taobao.taobao", PackageManager.MATCH_UNINSTALLED_PACKAGES);//即使你卸载了，我也要拿到你的信息
+            isTaobaoInstalled = packageInfo != null;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            isTaobaoInstalled = false;
+        }
+        LogUtils.d(TicketActivity.class, "isTaobaoInstalled-->" + isTaobaoInstalled);
+        //根据这个布尔值去修改UI
+        updateButtonText();
+    }
+
+    private void updateButtonText() {
+        mOpenOrCopyBtn.setText(isTaobaoInstalled ? "打开淘宝领券" : "复制淘口令");
     }
 
     @Override
@@ -88,7 +110,7 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
 
         Ticket.DataBeanX.TbkTpwdCreateResponseBean tbk_tpwd_create_response = ticket.getData().getTbk_tpwd_create_response();
         if (ticket != null && tbk_tpwd_create_response != null) {
-            LogUtils.d(TicketActivity.class,"taokouling-->"+ticket.getData().getTbk_tpwd_create_response().getData().getModel());
+            LogUtils.d(TicketActivity.class, "taokouling-->" + ticket.getData().getTbk_tpwd_create_response().getData().getModel());
             mTicketCode.setText(ticket.getData().getTbk_tpwd_create_response().getData().getModel());
         }
         if (loadingView != null) {
@@ -117,7 +139,8 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
     }
 
     @Override //因为这个界面没做EMPTY状态，所以这个就不写了
-    public void onEmpty() { }
+    public void onEmpty() {
+    }
 
     @Override
     protected void release() {
