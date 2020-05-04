@@ -2,9 +2,11 @@ package com.finham.taobaocoupon.utils;
 
 import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.IHomePresenter;
+import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
 import com.finham.taobaocoupon.presenter.ITicketPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.HomePresenterImpl;
+import com.finham.taobaocoupon.presenter.implement.SelectedPagerPresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.TicketPresenterImpl;
 
 /**
@@ -31,6 +33,12 @@ public class PresenterManager {
 
     private ITicketPresenter mTicketPresenter;
 
+    public ISelectedPagerPresenter getSelectedPagerPresenter() {
+        return mSelectedPagerPresenter;
+    }
+
+    private ISelectedPagerPresenter mSelectedPagerPresenter;
+
     //单例
     private static final PresenterManager ourInstance = new PresenterManager();
 
@@ -42,6 +50,7 @@ public class PresenterManager {
         mCategoryPagerPresenter = new CategoryPagerPresenterImpl(); //通过接口获取实例，隐藏内部实现！妙
         mHomePresenter = new HomePresenterImpl();
         mTicketPresenter = new TicketPresenterImpl();
+        mSelectedPagerPresenter = new SelectedPagerPresenterImpl();
     }
 
 }
