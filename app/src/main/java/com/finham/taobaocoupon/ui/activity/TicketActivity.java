@@ -102,7 +102,7 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
             //判断有没有淘宝
             if (isTaobaoInstalled) {
                 Intent taobaoIntent = new Intent();
-                taobaoIntent.setComponent(new ComponentName("com.taobao.taobao", "com.taobao.tao.welcome.Welcome"));
+                taobaoIntent.setComponent(new ComponentName("com.taobao.taobao", "com.taobao.tao.TBMainActivity"));
                 startActivity(taobaoIntent);
             } else {
                 ToastUtils.showToast("淘口令已复制！");
