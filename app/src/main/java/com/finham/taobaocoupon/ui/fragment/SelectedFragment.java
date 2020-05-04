@@ -3,15 +3,21 @@ package com.finham.taobaocoupon.ui.fragment;
 import android.util.Log;
 import android.view.View;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseFragment;
 import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
 import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
+import com.finham.taobaocoupon.ui.adapter.SelectedCategoryAdapter;
 import com.finham.taobaocoupon.utils.PresenterManager;
 import com.finham.taobaocoupon.view.ISelectedPagerCallback;
 
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * User: Fin
@@ -19,7 +25,14 @@ import java.util.List;
  * Time: 13:34
  */
 public class SelectedFragment extends BaseFragment implements ISelectedPagerCallback {
+    @BindView(R.id.left_category_list)
+    public RecyclerView mLeft;
+    @BindView(R.id.right_content_list)
+    public RecyclerView mRight;
+
     ISelectedPagerPresenter mSelectedPagerPresenter;
+    private SelectedCategoryAdapter mAdapter;
+
     @Override
     protected void initPresenter() {
         mSelectedPagerPresenter = PresenterManager.getInstance().getSelectedPagerPresenter();
@@ -41,10 +54,14 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     @Override
     protected void initView(View view) {
         changeState(State.SUCCESS);
+        mLeft.setLayoutManager(new LinearLayoutManager(requireContext()));
+        mAdapter = new SelectedCategoryAdapter();
+        mLeft.setAdapter(mAdapter);
     }
 
     @Override
     public void onCategoryLoaded(SelectedCategory category) {
+        mAdapter.setData(category);
         //分类的数据会从这个方法传回来！分类的操作要在这里做
         //根据当前的分类，然后再去拿内容数据
         List<SelectedCategory.DataBean> contents = category.getData();

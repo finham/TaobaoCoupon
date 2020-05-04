@@ -27,6 +27,6 @@ public class UrlUtils {
     }
 
     public static String getSelectedContentUrl(int categoryId) {
-        return "/recommend/" + categoryId;
+        return "recommend/" + categoryId;
     }
 }
