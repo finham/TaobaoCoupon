@@ -15,7 +15,7 @@ public class UrlUtils {
     }
 
     public static String getCoverPath(String url) {
-        return "https:" + url ;
+        return "https:" + url;
     }
 
     public static String getTicketUrl(String url) {
@@ -24,5 +24,9 @@ public class UrlUtils {
         } else {
             return "https:" + url;
         }
+    }
+
+    public static String getSelectedContentUrl(int categoryId) {
+        return "/recommend/" + categoryId;
     }
 }

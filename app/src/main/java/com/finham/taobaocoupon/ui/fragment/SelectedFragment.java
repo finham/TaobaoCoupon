@@ -1,28 +1,37 @@
 package com.finham.taobaocoupon.ui.fragment;
 
+import android.util.Log;
 import android.view.View;
 
 import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseFragment;
+import com.finham.taobaocoupon.model.domain.SelectedCategory;
+import com.finham.taobaocoupon.model.domain.SelectedContent;
+import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
+import com.finham.taobaocoupon.utils.PresenterManager;
+import com.finham.taobaocoupon.view.ISelectedPagerCallback;
+
+import java.util.List;
 
 /**
  * User: Fin
  * Date: 2020/4/14
  * Time: 13:34
  */
-public class SelectedFragment extends BaseFragment {
+public class SelectedFragment extends BaseFragment implements ISelectedPagerCallback {
+    ISelectedPagerPresenter mSelectedPagerPresenter;
+    @Override
+    protected void initPresenter() {
+        mSelectedPagerPresenter = PresenterManager.getInstance().getSelectedPagerPresenter();
+        mSelectedPagerPresenter.registerViewCallback(this); //让当前类实现该接口，也就相当于注册了回调！妙哉
+    }
 
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_home, container, false);
-//    }
-
-    //既然每个都要重写这个，那还不如放到BaseFragment里。
-    //@Override
-    //protected View loadRootView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-    //    return null;
-    //}
+    @Override
+    protected void release() {
+        if (mSelectedPagerPresenter != null) {
+            mSelectedPagerPresenter.unregisterCallback(this);
+        }
+    }
 
     @Override
     protected int getRootViewResId() {
@@ -32,5 +41,34 @@ public class SelectedFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         changeState(State.SUCCESS);
+    }
+
+    @Override
+    public void onCategoryLoaded(SelectedCategory category) {
+        //分类的数据会从这个方法传回来！分类的操作要在这里做
+        //根据当前的分类，然后再去拿内容数据
+        List<SelectedCategory.DataBean> contents = category.getData();
+        mSelectedPagerPresenter.getContentByCategory(contents.get(0));
+    }
+
+    @Override
+    public void onContentLoaded(SelectedContent content) {
+        //上面写那两句后来这边看看数据是否正确回来
+        Log.d("SelectedFragment", "onContentLoaded-->" + content.getData().getTbk_uatm_favorites_item_get_response().getResults().getUatm_tbk_item().get(0).getTitle());//记得去bean类中复写toString()。
+    }
+
+    @Override
+    public void onError() {
+
+    }
+
+    @Override
+    public void onLoading() {
+
+    }
+
+    @Override
+    public void onEmpty() {
+
     }
 }

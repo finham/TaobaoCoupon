@@ -5,6 +5,7 @@ import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
 import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
 import com.finham.taobaocoupon.utils.RetrofitManager;
+import com.finham.taobaocoupon.utils.UrlUtils;
 import com.finham.taobaocoupon.view.ISelectedPagerCallback;
 
 import java.net.HttpURLConnection;
@@ -66,7 +67,8 @@ public class SelectedPagerPresenterImpl implements ISelectedPagerPresenter {
         mCurrentCategoryItem = bean;
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
-        Call<SelectedContent> selectedContent = api.getSelectedContent(bean.getFavorites_id());
+        String url = UrlUtils.getSelectedContentUrl(bean.getFavorites_id());
+        Call<SelectedContent> selectedContent = api.getSelectedContent(url);
         selectedContent.enqueue(new Callback<SelectedContent>() {
             @Override
             public void onResponse(Call<SelectedContent> call, Response<SelectedContent> response) {

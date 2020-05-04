@@ -11,7 +11,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -39,8 +38,8 @@ public interface Api {
     @GET("recommend/categories")
     Call<SelectedCategory> getSelectedCategory();
 
-    @GET("recommend/categoryId")
-    Call<SelectedContent> getSelectedContent(@Query("categoryId") int categoryId); //categoryId要作为请求的url中的一部分，所以要加注解
+    @GET
+    Call<SelectedContent> getSelectedContent(@Url String url);
     //加了注解的话就等于：@GET("recommend/categoryId?categoryId=xxxx")这样的形式
     //这部分推荐去看网络编程相关课程！
 }
