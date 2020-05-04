@@ -1,5 +1,7 @@
 package com.finham.taobaocoupon.presenter.implement;
 
+import android.util.Log;
+
 import com.finham.taobaocoupon.model.Api;
 import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
@@ -38,6 +40,7 @@ public class SelectedPagerPresenterImpl implements ISelectedPagerPresenter {
             @Override
             public void onResponse(Call<SelectedCategory> call, Response<SelectedCategory> response) {
                 int code = response.code();
+                Log.d("SelectedPagerPresenter", "code-->"+code);
                 if (code == HttpURLConnection.HTTP_OK) {
                     SelectedCategory category = response.body();
                     if (mCallback != null) {

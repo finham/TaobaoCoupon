@@ -1,5 +1,6 @@
 package com.finham.taobaocoupon.ui.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class SelectedCategoryAdapter extends RecyclerView.Adapter<SelectedCatego
 
     private List<SelectedCategory.DataBean> mDataBeanList = new ArrayList<>();
     private int mCurrentSelectedPosition;
+    private onLeftCategoryClickListener mOnLeftClickListener;
 
     @NonNull
     @Override
@@ -40,7 +42,16 @@ public class SelectedCategoryAdapter extends RecyclerView.Adapter<SelectedCatego
         } else {
             holder.itemView.setBackgroundColor(tv.getContext().getResources().getColor(R.color.white));
         }
-        tv.setText(mDataBeanList.get(position).getFavorites_title());
+        SelectedCategory.DataBean dataBean = mDataBeanList.get(position);
+        tv.setText(dataBean.getFavorites_title());
+        holder.itemView.setOnClickListener(view -> {
+            if (mOnLeftClickListener != null && mCurrentSelectedPosition != position) {
+                //修改SelectedPosition的位置
+                mCurrentSelectedPosition = position;
+                mOnLeftClickListener.onLeftCategoryClick(dataBean);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -58,13 +69,25 @@ public class SelectedCategoryAdapter extends RecyclerView.Adapter<SelectedCatego
         if (data != null) {
             mDataBeanList.clear();
             mDataBeanList.addAll(data);
+            Log.d("SelectedCategoryAdapter", String.valueOf(mDataBeanList.size()));
             notifyDataSetChanged();
         }
     }
 
-    public class InnerHolder extends RecyclerView.ViewHolder {
-        public InnerHolder(@NonNull View itemView) {
+    class InnerHolder extends RecyclerView.ViewHolder {
+        InnerHolder(@NonNull View itemView) {
             super(itemView);
         }
+    }
+
+    public void setLeftCategoryClickListener(onLeftCategoryClickListener listener) {
+        this.mOnLeftClickListener = listener;
+    }
+
+    /**
+     * 创建接口来实现点击事件的响应
+     */
+    public interface onLeftCategoryClickListener {
+        void onLeftCategoryClick(SelectedCategory.DataBean bean);
     }
 }

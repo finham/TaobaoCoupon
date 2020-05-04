@@ -24,7 +24,7 @@ import butterknife.BindView;
  * Date: 2020/4/14
  * Time: 13:34
  */
-public class SelectedFragment extends BaseFragment implements ISelectedPagerCallback {
+public class SelectedFragment extends BaseFragment implements ISelectedPagerCallback, SelectedCategoryAdapter.onLeftCategoryClickListener {
     @BindView(R.id.left_category_list)
     public RecyclerView mLeft;
     @BindView(R.id.right_content_list)
@@ -34,9 +34,25 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     private SelectedCategoryAdapter mAdapter;
 
     @Override
+    protected void initView(View view) {
+        changeState(State.SUCCESS);
+        //左边的RV设置数据并显示
+        mLeft.setLayoutManager(new LinearLayoutManager(requireContext()));
+        mAdapter = new SelectedCategoryAdapter();
+        mLeft.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void initListener() {
+        mAdapter.setLeftCategoryClickListener(this);
+    }
+
+    @Override
     protected void initPresenter() {
         mSelectedPagerPresenter = PresenterManager.getInstance().getSelectedPagerPresenter();
         mSelectedPagerPresenter.registerViewCallback(this); //让当前类实现该接口，也就相当于注册了回调！妙哉
+        //少了以下这句至少调试了20分钟= =。。。 MVP我真的很容易乱糟糟
+        mSelectedPagerPresenter.getCategory();
     }
 
     @Override
@@ -49,14 +65,6 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     @Override
     protected int getRootViewResId() {
         return R.layout.fragment_selected;
-    }
-
-    @Override
-    protected void initView(View view) {
-        changeState(State.SUCCESS);
-        mLeft.setLayoutManager(new LinearLayoutManager(requireContext()));
-        mAdapter = new SelectedCategoryAdapter();
-        mLeft.setAdapter(mAdapter);
     }
 
     @Override
@@ -87,5 +95,10 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     @Override
     public void onEmpty() {
 
+    }
+
+    @Override
+    public void onLeftCategoryClick(SelectedCategory.DataBean bean) {
+        //在此处设置左边分类的点击事件
     }
 }
