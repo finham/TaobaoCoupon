@@ -1,6 +1,8 @@
 package com.finham.taobaocoupon.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import com.finham.taobaocoupon.base.BaseFragment;
 import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
 import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
+import com.finham.taobaocoupon.presenter.ITicketPresenter;
+import com.finham.taobaocoupon.ui.activity.TicketActivity;
 import com.finham.taobaocoupon.ui.adapter.SelectedCategoryAdapter;
 import com.finham.taobaocoupon.ui.adapter.SelectedContentAdapter;
 import com.finham.taobaocoupon.utils.DensityUtils;
@@ -25,7 +29,7 @@ import butterknife.BindView;
  * Date: 2020/4/14
  * Time: 13:34
  */
-public class SelectedFragment extends BaseFragment implements ISelectedPagerCallback, SelectedCategoryAdapter.onLeftCategoryClickListener {
+public class SelectedFragment extends BaseFragment implements ISelectedPagerCallback, SelectedCategoryAdapter.onLeftCategoryClickListener, SelectedContentAdapter.onRightContentClickListener {
     @BindView(R.id.left_category_list)
     public RecyclerView mLeft;
     @BindView(R.id.right_content_list)
@@ -50,10 +54,10 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.top = DensityUtils.dp2px(requireContext(),4);
-                outRect.bottom = DensityUtils.dp2px(requireContext(),4);
-                outRect.left=DensityUtils.dp2px(requireContext(),6);
-                outRect.right=DensityUtils.dp2px(requireContext(),6);
+                outRect.top = DensityUtils.dp2px(requireContext(), 4);
+                outRect.bottom = DensityUtils.dp2px(requireContext(), 4);
+                outRect.left = DensityUtils.dp2px(requireContext(), 6);
+                outRect.right = DensityUtils.dp2px(requireContext(), 6);
             }
         });
         mRight.setAdapter(mRightAdapter);
@@ -62,6 +66,7 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     @Override
     protected void initListener() {
         mLeftAdapter.setLeftCategoryClickListener(this);
+        mRightAdapter.setOnRightContentClickListener(this);
     }
 
     @Override
@@ -121,5 +126,19 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     public void onLeftCategoryClick(SelectedCategory.DataBean bean) {
         //在此处设置左边分类的点击事件
         mSelectedPagerPresenter.getContentByCategory(bean);
+    }
+
+    @Override
+    public void onRightContentClick(SelectedContent.DataBean.TbkUatmFavoritesItemGetResponseBean.ResultsBean.UatmTbkItemBean data) {
+        //跳转到淘口令页面
+        String title = data.getTitle();
+        String url = data.getCoupon_click_url();
+        if (TextUtils.isEmpty(url)) {
+            url = data.getClick_url(); //有一些商品可能没有券，那么就得做这样的预防case
+        }
+        String cover = data.getPict_url();
+        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
+        ticketPresenter.getTicket(title, url, cover);
+        startActivity(new Intent(requireActivity(), TicketActivity.class));
     }
 }

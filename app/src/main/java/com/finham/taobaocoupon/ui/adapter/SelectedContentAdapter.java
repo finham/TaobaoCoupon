@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
  */
 public class SelectedContentAdapter extends RecyclerView.Adapter<SelectedContentAdapter.InnerHolder> {
     List<SelectedContent.DataBean.TbkUatmFavoritesItemGetResponseBean.ResultsBean.UatmTbkItemBean> mList = new ArrayList<>();
+    private onRightContentClickListener mOnRightContentClickListener;
 
     public void setData(SelectedContent content) {
         if (content.getCode() == Constants.SUCCESS_CODE) {
@@ -50,6 +51,9 @@ public class SelectedContentAdapter extends RecyclerView.Adapter<SelectedContent
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         SelectedContent.DataBean.TbkUatmFavoritesItemGetResponseBean.ResultsBean.UatmTbkItemBean uatmTbkItemBean = mList.get(position);
         holder.setData(uatmTbkItemBean);
+        holder.itemView.setOnClickListener(view -> {
+            mOnRightContentClickListener.onRightContentClick(uatmTbkItemBean);
+        });
     }
 
     @Override
@@ -99,5 +103,13 @@ public class SelectedContentAdapter extends RecyclerView.Adapter<SelectedContent
                 offPriseTv.setText(itemData.getCoupon_info());
             }
         }
+    }
+    
+    public void setOnRightContentClickListener(onRightContentClickListener listener){
+        this.mOnRightContentClickListener = listener;
+    }
+    
+    public interface onRightContentClickListener{
+        void onRightContentClick(SelectedContent.DataBean.TbkUatmFavoritesItemGetResponseBean.ResultsBean.UatmTbkItemBean data);
     }
 }

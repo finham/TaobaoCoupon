@@ -15,7 +15,11 @@ public class UrlUtils {
     }
 
     public static String getCoverPath(String url) {
-        return "https:" + url;
+        if (url.startsWith("http") || url.startsWith("https")) {
+            return url;
+        } else {
+            return "https:" + url;
+        }
     }
 
     public static String getTicketUrl(String url) {
