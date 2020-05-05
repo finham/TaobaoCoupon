@@ -131,17 +131,14 @@ public abstract class BaseFragment extends Fragment {
      */
     public void changeState(State state) {
         this.currentState = state;
-
         if (currentState == State.SUCCESS)
             mSuccessView.setVisibility(View.VISIBLE);
         else
             mSuccessView.setVisibility(View.GONE);
-
         if (currentState == State.LOADING)
             mLoadingView.setVisibility(View.VISIBLE);
         else
             mLoadingView.setVisibility(View.GONE);
-
         mErrorView.setVisibility(currentState == State.ERROR ? View.INVISIBLE : View.GONE);
         mEmptyView.setVisibility(currentState == State.EMPTY ? View.INVISIBLE : View.GONE);
     }

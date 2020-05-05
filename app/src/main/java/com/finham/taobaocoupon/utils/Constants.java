@@ -11,4 +11,5 @@ public class Constants {
     //HomePagerFragment bundle key
     public static final String HOME_PAGER_KEY_TITLE = "title";
     public static final String HOME_PAGER_KEY_MATERIAL_ID = "materialId";
+    public static final int SUCCESS_CODE = 10000;
 }

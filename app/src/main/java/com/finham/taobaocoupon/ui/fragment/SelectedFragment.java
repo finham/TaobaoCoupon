@@ -1,8 +1,9 @@
 package com.finham.taobaocoupon.ui.fragment;
 
-import android.util.Log;
+import android.graphics.Rect;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,8 @@ import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
 import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
 import com.finham.taobaocoupon.ui.adapter.SelectedCategoryAdapter;
+import com.finham.taobaocoupon.ui.adapter.SelectedContentAdapter;
+import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.PresenterManager;
 import com.finham.taobaocoupon.view.ISelectedPagerCallback;
 
@@ -31,20 +34,36 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     public RecyclerView mRight;
 
     ISelectedPagerPresenter mSelectedPagerPresenter;
-    private SelectedCategoryAdapter mAdapter;
+    private SelectedCategoryAdapter mLeftAdapter;
+    private SelectedContentAdapter mRightAdapter;
+
 
     @Override
     protected void initView(View view) {
         changeState(State.SUCCESS);
         //左边的RV设置数据并显示
         mLeft.setLayoutManager(new LinearLayoutManager(requireContext()));
-        mAdapter = new SelectedCategoryAdapter();
-        mLeft.setAdapter(mAdapter);
+        mLeftAdapter = new SelectedCategoryAdapter();
+        mLeft.setAdapter(mLeftAdapter);
+
+        mRight.setLayoutManager(new LinearLayoutManager(requireContext()));
+        mRightAdapter = new SelectedContentAdapter();
+        mRight.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.top = DensityUtils.dp2px(requireContext(),4);
+                outRect.bottom = DensityUtils.dp2px(requireContext(),4);
+                outRect.left=DensityUtils.dp2px(requireContext(),6);
+                outRect.right=DensityUtils.dp2px(requireContext(),6);
+            }
+        });
+        mRight.setAdapter(mRightAdapter);
     }
 
     @Override
     protected void initListener() {
-        mAdapter.setLeftCategoryClickListener(this);
+        mLeftAdapter.setLeftCategoryClickListener(this);
     }
 
     @Override
@@ -69,7 +88,8 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
 
     @Override
     public void onCategoryLoaded(SelectedCategory category) {
-        mAdapter.setData(category);
+        changeState(State.SUCCESS);
+        mLeftAdapter.setData(category);
         //分类的数据会从这个方法传回来！分类的操作要在这里做
         //根据当前的分类，然后再去拿内容数据
         List<SelectedCategory.DataBean> contents = category.getData();
@@ -79,17 +99,17 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     @Override
     public void onContentLoaded(SelectedContent content) {
         //上面写那两句后来这边看看数据是否正确回来
-        Log.d("SelectedFragment", "onContentLoaded-->" + content.getData().getTbk_uatm_favorites_item_get_response().getResults().getUatm_tbk_item().get(0).getTitle());//记得去bean类中复写toString()。
+        mRightAdapter.setData(content);
     }
 
     @Override
     public void onError() {
-
+        changeState(State.ERROR);
     }
 
     @Override
     public void onLoading() {
-
+        changeState(State.LOADING);
     }
 
     @Override
@@ -100,5 +120,6 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     @Override
     public void onLeftCategoryClick(SelectedCategory.DataBean bean) {
         //在此处设置左边分类的点击事件
+        mSelectedPagerPresenter.getContentByCategory(bean);
     }
 }

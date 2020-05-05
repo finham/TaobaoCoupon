@@ -64,9 +64,9 @@ public class SelectedPagerPresenterImpl implements ISelectedPagerPresenter {
 
     @Override
     public void getContentByCategory(SelectedCategory.DataBean bean) {
-        if (mCallback != null) {
-            mCallback.onLoading();
-        }
+//        if (mCallback != null) {
+//            mCallback.onLoading();
+//        }
         mCurrentCategoryItem = bean;
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);

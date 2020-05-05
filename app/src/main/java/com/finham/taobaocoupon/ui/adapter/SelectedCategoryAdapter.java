@@ -26,6 +26,23 @@ public class SelectedCategoryAdapter extends RecyclerView.Adapter<SelectedCatego
     private int mCurrentSelectedPosition;
     private onLeftCategoryClickListener mOnLeftClickListener;
 
+    /**
+     * 设置数据（我个人不会是这种写法= =，我会放到构造方法里，不过也不一定，我最近也有在使用普通方法 2020.05.04）
+     *
+     * @param category
+     */
+    public void setData(SelectedCategory category) {
+        List<SelectedCategory.DataBean> data = category.getData();
+        if (data != null) {
+            mDataBeanList.clear();
+            mDataBeanList.addAll(data);
+            notifyDataSetChanged();
+        }
+        if (mDataBeanList.size() > 0) {
+            mOnLeftClickListener.onLeftCategoryClick(mDataBeanList.get(mCurrentSelectedPosition));
+        }
+    }
+
     @NonNull
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,6 +61,7 @@ public class SelectedCategoryAdapter extends RecyclerView.Adapter<SelectedCatego
         }
         SelectedCategory.DataBean dataBean = mDataBeanList.get(position);
         tv.setText(dataBean.getFavorites_title());
+        Log.d("SelectedCategoryAdapter", dataBean.getFavorites_title());
         holder.itemView.setOnClickListener(view -> {
             if (mOnLeftClickListener != null && mCurrentSelectedPosition != position) {
                 //修改SelectedPosition的位置
@@ -59,21 +77,6 @@ public class SelectedCategoryAdapter extends RecyclerView.Adapter<SelectedCatego
         return mDataBeanList.size();
     }
 
-    /**
-     * 设置数据（我个人不会是这种写法= =，我会放到构造方法里，不过也不一定，我最近也有在使用普通方法 2020.05.04）
-     *
-     * @param category
-     */
-    public void setData(SelectedCategory category) {
-        List<SelectedCategory.DataBean> data = category.getData();
-        if (data != null) {
-            mDataBeanList.clear();
-            mDataBeanList.addAll(data);
-            Log.d("SelectedCategoryAdapter", String.valueOf(mDataBeanList.size()));
-            notifyDataSetChanged();
-        }
-    }
-
     class InnerHolder extends RecyclerView.ViewHolder {
         InnerHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +85,9 @@ public class SelectedCategoryAdapter extends RecyclerView.Adapter<SelectedCatego
 
     public void setLeftCategoryClickListener(onLeftCategoryClickListener listener) {
         this.mOnLeftClickListener = listener;
+//        if (mDataBeanList.size() > 0) {
+//            mOnLeftClickListener.onLeftCategoryClick(mDataBeanList.get(mCurrentSelectedPosition));
+//        }
     }
 
     /**
