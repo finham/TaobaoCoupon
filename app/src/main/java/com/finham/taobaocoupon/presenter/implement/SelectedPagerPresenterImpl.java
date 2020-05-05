@@ -99,9 +99,10 @@ public class SelectedPagerPresenterImpl implements ISelectedPagerPresenter {
 
     @Override
     public void reloadContent() {
-        if (mCurrentCategoryItem != null) {
-            this.getContentByCategory(mCurrentCategoryItem);
-        }
+//        if (mCurrentCategoryItem != null) {
+//            this.getContentByCategory(mCurrentCategoryItem);
+//        }
+        this.getCategory();
     }
 
     @Override

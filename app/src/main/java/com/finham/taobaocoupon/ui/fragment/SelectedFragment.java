@@ -85,6 +85,13 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     }
 
     @Override
+    protected void onRetryClick() {
+        if (mSelectedPagerPresenter != null) {
+            mSelectedPagerPresenter.reloadContent();
+        }
+    }
+
+    @Override
     protected int getRootViewResId() {
         return R.layout.fragment_selected;
     }
@@ -119,7 +126,7 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
 
     @Override
     public void onEmpty() {
-
+        changeState(State.EMPTY);
     }
 
     @Override
