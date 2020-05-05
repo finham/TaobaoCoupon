@@ -18,8 +18,6 @@ import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.PresenterManager;
 import com.finham.taobaocoupon.view.ISelectedPagerCallback;
 
-import java.util.List;
-
 import butterknife.BindView;
 
 /**
@@ -92,14 +90,16 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
         mLeftAdapter.setData(category);
         //分类的数据会从这个方法传回来！分类的操作要在这里做
         //根据当前的分类，然后再去拿内容数据
-        List<SelectedCategory.DataBean> contents = category.getData();
-        mSelectedPagerPresenter.getContentByCategory(contents.get(0));
+//        List<SelectedCategory.DataBean> contents = category.getData();
+//        mSelectedPagerPresenter.getContentByCategory(contents.get(0));
     }
 
     @Override
     public void onContentLoaded(SelectedContent content) {
         //上面写那两句后来这边看看数据是否正确回来
         mRightAdapter.setData(content);
+        //每次切换都回到第一个位置
+        mRight.scrollToPosition(0);
     }
 
     @Override
