@@ -2,10 +2,12 @@ package com.finham.taobaocoupon.utils;
 
 import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.IHomePresenter;
+import com.finham.taobaocoupon.presenter.IPreferentialPagePresenter;
 import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
 import com.finham.taobaocoupon.presenter.ITicketPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.HomePresenterImpl;
+import com.finham.taobaocoupon.presenter.implement.PreferentialPagePresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.SelectedPagerPresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.TicketPresenterImpl;
 
@@ -15,29 +17,34 @@ import com.finham.taobaocoupon.presenter.implement.TicketPresenterImpl;
  * Time: 22:25
  */
 public class PresenterManager {
+    private ICategoryPagerPresenter mCategoryPagerPresenter;
+    private IHomePresenter mHomePresenter;
+    private ITicketPresenter mTicketPresenter;
+    private ISelectedPagerPresenter mSelectedPagerPresenter;
+    private IPreferentialPagePresenter mPreferentialPagePresenter;
+
     public ICategoryPagerPresenter getCategoryPagerPresenter() {
         return mCategoryPagerPresenter;
     }
-
-    private ICategoryPagerPresenter mCategoryPagerPresenter;
 
     public IHomePresenter getHomePresenter() {
         return mHomePresenter;
     }
 
-    private IHomePresenter mHomePresenter;
 
     public ITicketPresenter getTicketPresenter() {
         return mTicketPresenter;
     }
 
-    private ITicketPresenter mTicketPresenter;
 
     public ISelectedPagerPresenter getSelectedPagerPresenter() {
         return mSelectedPagerPresenter;
     }
 
-    private ISelectedPagerPresenter mSelectedPagerPresenter;
+
+    public IPreferentialPagePresenter getPreferentialPagePresenter() {
+        return mPreferentialPagePresenter;
+    }
 
     //单例
     private static final PresenterManager ourInstance = new PresenterManager();
@@ -51,6 +58,7 @@ public class PresenterManager {
         mHomePresenter = new HomePresenterImpl();
         mTicketPresenter = new TicketPresenterImpl();
         mSelectedPagerPresenter = new SelectedPagerPresenterImpl();
+        mPreferentialPagePresenter = new PreferentialPagePresenterImpl();
     }
 
 }

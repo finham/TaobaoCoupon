@@ -83,6 +83,9 @@ public class PreferentialPagePresenterImpl implements IPreferentialPagePresenter
         this.getPreferentialContent();
     }
 
+    /**
+     * 加载更多，通知UI更新
+     */
     @Override
     public void loadMore() {
         if (isLoading) {

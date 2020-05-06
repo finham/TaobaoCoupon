@@ -10,7 +10,7 @@ import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseActivity;
 import com.finham.taobaocoupon.base.BaseFragment;
 import com.finham.taobaocoupon.ui.fragment.HomeFragment;
-import com.finham.taobaocoupon.ui.fragment.PocketFragment;
+import com.finham.taobaocoupon.ui.fragment.PreferentialFragment;
 import com.finham.taobaocoupon.ui.fragment.SearchFragment;
 import com.finham.taobaocoupon.ui.fragment.SelectedFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,14 +23,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     private HomeFragment homeFragment;
     SelectedFragment selectedFragment;
-    PocketFragment pocketFragment;
+    PreferentialFragment mPreferentialFragment;
     SearchFragment searchFragment;
 
     @Override
     protected void initView() {
         homeFragment = new HomeFragment();
         selectedFragment = new SelectedFragment();
-        pocketFragment = new PocketFragment();
+        mPreferentialFragment = new PreferentialFragment();
         searchFragment = new SearchFragment();
     }
 
@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         //LogUtils使用方法：LogUtils.v(MainActivity.class, "首页");
         if (item.getItemId() == R.id.home) switchToFragment(homeFragment);
         else if (item.getItemId() == R.id.selected) switchToFragment(selectedFragment);
-        else if (item.getItemId() == R.id.pocket) switchToFragment(pocketFragment);
+        else if (item.getItemId() == R.id.pocket) switchToFragment(mPreferentialFragment);
         else if (item.getItemId() == R.id.search) switchToFragment(searchFragment);
         return true; //return true表示消费这个事件，图标才会真正跟着切换过去
     }
