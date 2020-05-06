@@ -2,6 +2,7 @@ package com.finham.taobaocoupon.model;
 
 import com.finham.taobaocoupon.model.domain.Category;
 import com.finham.taobaocoupon.model.domain.HomePagerContent;
+import com.finham.taobaocoupon.model.domain.PreferentialContent;
 import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
 import com.finham.taobaocoupon.model.domain.Ticket;
@@ -42,4 +43,10 @@ public interface Api {
     Call<SelectedContent> getSelectedContent(@Url String url);
     //加了注解的话就等于：@GET("recommend/categoryId?categoryId=xxxx")这样的形式
     //这部分推荐去看网络编程相关课程！
+
+    /**
+     * 获取特惠内容
+     */
+    @GET//("onSell/{page}") //可以这样写，也可以直接用@Url在参数中（形参）
+    Call<PreferentialContent> getPreferentialContent(@Url String url);
 }
