@@ -31,7 +31,7 @@ public class SelectedPagerPresenterImpl implements ISelectedPagerPresenter {
         if (mCallback != null) {
             mCallback.onLoading();
         }
-        //先要拿到fenlei
+        //先要拿到分类
         //先拿到retrofit
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);

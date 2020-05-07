@@ -7,7 +7,9 @@ package com.finham.taobaocoupon.utils;
  */
 //
 public class Constants {
-    public static final String BASE_URL = "https://api.sunofbeach.net/shop/api/";
+    //public static final String BASE_URL = "https://api.sunofbeach.net/shop/api/";
+    //2020.05.07 API地址变了
+    public static final String BASE_URL = "https://api.sunofbeach.net/shop/";
     //HomePagerFragment bundle key
     public static final String HOME_PAGER_KEY_TITLE = "title";
     public static final String HOME_PAGER_KEY_MATERIAL_ID = "materialId";

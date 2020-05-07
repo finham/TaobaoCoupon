@@ -1,7 +1,9 @@
 package com.finham.taobaocoupon.ui.fragment;
 
+import android.graphics.Rect;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +14,7 @@ import com.finham.taobaocoupon.presenter.IPreferentialPagePresenter;
 import com.finham.taobaocoupon.ui.adapter.PreferentialAdapter;
 import com.finham.taobaocoupon.utils.PresenterManager;
 import com.finham.taobaocoupon.view.IPreferentialPageCallback;
+import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 
 import butterknife.BindView;
 
@@ -29,10 +32,18 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
 
     @Override
     protected void initView(View view) {
-        changeState(State.SUCCESS);
         mAdapter = new PreferentialAdapter();
         mRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.top = DensityUtil.dp2px(requireContext(),2.5f);
+                outRect.bottom = DensityUtil.dp2px(requireContext(),2.5f);
+                outRect.left = DensityUtil.dp2px(requireContext(),2.5f);
+                outRect.right = DensityUtil.dp2px(requireContext(),2.5f);
+            }
+        });
     }
 
     @Override
@@ -60,7 +71,9 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
 
     @Override
     public void onContentLoaded(PreferentialContent content) {
+        changeState(State.SUCCESS);
         //数据从这个方法回来了！在此更新UI
+        mAdapter.setData(content);
     }
 
     @Override
@@ -80,16 +93,16 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
 
     @Override
     public void onError() {
-
+        changeState(State.ERROR);
     }
 
     @Override
     public void onLoading() {
-
+        changeState(State.LOADING);
     }
 
     @Override
     public void onEmpty() {
-
+        changeState(State.EMPTY);
     }
 }
