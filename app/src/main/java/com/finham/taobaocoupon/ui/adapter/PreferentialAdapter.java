@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
  */
 public class PreferentialAdapter extends RecyclerView.Adapter<PreferentialAdapter.InnerHolder> {
     private List<PreferentialContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean> mList = new ArrayList<>();
+    private OnPreferentialItemClickListener mListener;
 
     public void setData(PreferentialContent content) {
         if (content != null) {
@@ -49,6 +50,15 @@ public class PreferentialAdapter extends RecyclerView.Adapter<PreferentialAdapte
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         PreferentialContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean mapDataBean = mList.get(position);
         holder.setData(mapDataBean);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //记得判空，Java就是这点烦！
+                if (mListener != null) {
+                    mListener.onPreferentialItemClick(mapDataBean);
+                }
+            }
+        });
     }
 
     @Override
@@ -96,5 +106,13 @@ public class PreferentialAdapter extends RecyclerView.Adapter<PreferentialAdapte
             float finalPrise = originPriseFloat - couponAmount;
             offPriceTv.setText("券后价：" + String.format("%.2f", finalPrise));
         }
+    }
+
+    public void setOnPreferentialItemClickListener(OnPreferentialItemClickListener listener){
+        this.mListener = listener;
+    }
+
+    public interface OnPreferentialItemClickListener{
+        void onPreferentialItemClick(PreferentialContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean data);
     }
 }

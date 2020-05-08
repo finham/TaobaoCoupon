@@ -1,6 +1,8 @@
 package com.finham.taobaocoupon.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,8 @@ import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseFragment;
 import com.finham.taobaocoupon.model.domain.PreferentialContent;
 import com.finham.taobaocoupon.presenter.IPreferentialPagePresenter;
+import com.finham.taobaocoupon.presenter.ITicketPresenter;
+import com.finham.taobaocoupon.ui.activity.TicketActivity;
 import com.finham.taobaocoupon.ui.adapter.PreferentialAdapter;
 import com.finham.taobaocoupon.utils.PresenterManager;
 import com.finham.taobaocoupon.utils.ToastUtils;
@@ -26,7 +30,7 @@ import butterknife.BindView;
  * Date: 2020/4/14
  * Time: 14:34
  */
-public class PreferentialFragment extends BaseFragment implements IPreferentialPageCallback {
+public class PreferentialFragment extends BaseFragment implements IPreferentialPageCallback, PreferentialAdapter.OnPreferentialItemClickListener {
 
     IPreferentialPagePresenter mPreferentialPagePresenter;
     private PreferentialAdapter mAdapter;
@@ -66,6 +70,7 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
                 }
             }
         });
+        mAdapter.setOnPreferentialItemClickListener(this);
     }
 
     @Override
@@ -125,5 +130,21 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
     @Override
     public void onEmpty() {
         changeState(State.EMPTY);
+    }
+
+    @Override
+    public void onPreferentialItemClick(PreferentialContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean item) {
+        String title = item.getTitle();
+        //这是商品详情的地址，我们要的是领券的地址
+        //String url = item.getClick_url();
+        //这个url就是领券的地址
+        String url = item.getCoupon_click_url();
+        if (TextUtils.isEmpty(url)) {
+            url = item.getClick_url(); //有一些商品可能没有券，那么就得做这样的预防case
+        }
+        String cover = item.getPict_url();
+        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
+        ticketPresenter.getTicket(title, url, cover);
+        startActivity(new Intent(requireActivity(), TicketActivity.class));
     }
 }
