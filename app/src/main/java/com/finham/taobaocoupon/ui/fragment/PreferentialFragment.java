@@ -13,7 +13,10 @@ import com.finham.taobaocoupon.model.domain.PreferentialContent;
 import com.finham.taobaocoupon.presenter.IPreferentialPagePresenter;
 import com.finham.taobaocoupon.ui.adapter.PreferentialAdapter;
 import com.finham.taobaocoupon.utils.PresenterManager;
+import com.finham.taobaocoupon.utils.ToastUtils;
 import com.finham.taobaocoupon.view.IPreferentialPageCallback;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
 
 import butterknife.BindView;
@@ -26,9 +29,12 @@ import butterknife.BindView;
 public class PreferentialFragment extends BaseFragment implements IPreferentialPageCallback {
 
     IPreferentialPagePresenter mPreferentialPagePresenter;
+    private PreferentialAdapter mAdapter;
+
     @BindView(R.id.preferential_content_list)
     public RecyclerView mRecyclerView;
-    private PreferentialAdapter mAdapter;
+    @BindView(R.id.preferential_refresh_layout)
+    public TwinklingRefreshLayout mTwinklingRefreshLayout;
 
     @Override
     protected void initView(View view) {
@@ -38,16 +44,28 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = DensityUtil.dp2px(requireContext(),2.5f);
-                outRect.bottom = DensityUtil.dp2px(requireContext(),2.5f);
-                outRect.left = DensityUtil.dp2px(requireContext(),2.5f);
-                outRect.right = DensityUtil.dp2px(requireContext(),2.5f);
+                outRect.top = DensityUtil.dp2px(requireContext(), 2.5f);
+                outRect.bottom = DensityUtil.dp2px(requireContext(), 2.5f);
+                outRect.left = DensityUtil.dp2px(requireContext(), 2.5f);
+                outRect.right = DensityUtil.dp2px(requireContext(), 2.5f);
             }
         });
+        mTwinklingRefreshLayout.setEnableLoadmore(true);
+        mTwinklingRefreshLayout.setEnableRefresh(false); //不让它支持下拉刷新
+        mTwinklingRefreshLayout.setEnableOverScroll(true);
     }
 
     @Override
     protected void initListener() {
+        mTwinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                //加载更多的逻辑
+                if (mPreferentialPagePresenter != null) {
+                    mPreferentialPagePresenter.loadMore(); //这边去加载更多后，结果会从onLoadMore方法中返回。
+                }
+            }
+        });
     }
 
     @Override
@@ -78,17 +96,20 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
 
     @Override
     public void onLoadMore(PreferentialContent moreContent) {
-
+        mTwinklingRefreshLayout.finishLoadmore();
+        mAdapter.setMoreData(moreContent);
     }
 
     @Override
     public void onLoadMoreError() {
-
+        mTwinklingRefreshLayout.finishLoadmore();
+        ToastUtils.showToast("网络异常");
     }
 
     @Override
     public void onLoadMoreEmpty() {
-
+        mTwinklingRefreshLayout.finishLoadmore();
+        ToastUtils.showToast("没有更多内容");
     }
 
     @Override
