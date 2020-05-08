@@ -114,7 +114,7 @@ public class PreferentialContent {
                     this.map_data = map_data;
                 }
 
-                public static class MapDataBean {
+                public static class MapDataBean implements IBaseInfo{
                     /**
                      * category_id : 162103
                      * category_name : 毛衣
@@ -347,8 +347,18 @@ public class PreferentialContent {
                         this.small_images = small_images;
                     }
 
+                    @Override
+                    public String getCover() {
+                        return pict_url;
+                    }
+
                     public String getTitle() {
                         return title;
+                    }
+
+                    @Override
+                    public String getUrl() {
+                        return coupon_click_url == null ? click_url : coupon_click_url;
                     }
 
                     public void setTitle(String title) {

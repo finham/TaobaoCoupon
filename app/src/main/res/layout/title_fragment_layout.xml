@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:text="@string/text_on_sell_title"
+            android:text="@string/text_preferential"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

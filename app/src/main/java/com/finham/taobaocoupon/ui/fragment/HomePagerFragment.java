@@ -1,9 +1,7 @@
 package com.finham.taobaocoupon.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
@@ -18,9 +16,8 @@ import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseFragment;
 import com.finham.taobaocoupon.model.domain.Category;
 import com.finham.taobaocoupon.model.domain.HomePagerContent;
+import com.finham.taobaocoupon.model.domain.IBaseInfo;
 import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
-import com.finham.taobaocoupon.presenter.ITicketPresenter;
-import com.finham.taobaocoupon.ui.activity.TicketActivity;
 import com.finham.taobaocoupon.ui.adapter.HomePagerRecyclerViewAdapter;
 import com.finham.taobaocoupon.ui.adapter.LooperAdapter;
 import com.finham.taobaocoupon.ui.custom.AutoLoopViewPager;
@@ -28,6 +25,7 @@ import com.finham.taobaocoupon.utils.Constants;
 import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.LogUtils;
 import com.finham.taobaocoupon.utils.PresenterManager;
+import com.finham.taobaocoupon.utils.TicketUtils;
 import com.finham.taobaocoupon.utils.ToastUtils;
 import com.finham.taobaocoupon.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -193,19 +191,21 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         });
     }
 
-    private void handleItemClick(HomePagerContent.DataBean item) {
-        String title = item.getTitle();
-        //商品详情的地址，我们要的是领券的地址
-        //String url = item.getClick_url();
-        //这个url就是领券的地址
-        String url = item.getCoupon_click_url();
-        if (TextUtils.isEmpty(url)) {
-            url = item.getClick_url(); //有一些商品可能没有券，那么就得做这样的预防case
-        }
-        String cover = item.getPict_url();
-        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
-        ticketPresenter.getTicket(title, url, cover);
-        startActivity(new Intent(requireActivity(), TicketActivity.class));
+    private void handleItemClick(IBaseInfo item) {
+//        String title = item.getTitle();
+//        //商品详情的地址，我们要的是领券的地址
+//        //String url = item.getClick_url();
+//        //这个url就是领券的地址
+//        String url = item.getCoupon_click_url();
+//        if (TextUtils.isEmpty(url)) {
+//            url = item.getClick_url(); //有一些商品可能没有券，那么就得做这样的预防case
+//        }
+//        String cover = item.getPict_url();
+//        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
+//        ticketPresenter.getTicket(title, url, cover);
+//        startActivity(new Intent(requireActivity(), TicketActivity.class));
+        TicketUtils.toTicketPage(requireContext(),item);
+
     }
 
     /**

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.finham.taobaocoupon.R;
+import com.finham.taobaocoupon.model.domain.IBaseInfo;
 import com.finham.taobaocoupon.model.domain.PreferentialContent;
 import com.finham.taobaocoupon.utils.ToastUtils;
 import com.finham.taobaocoupon.utils.UrlUtils;
@@ -113,6 +114,6 @@ public class PreferentialAdapter extends RecyclerView.Adapter<PreferentialAdapte
     }
 
     public interface OnPreferentialItemClickListener{
-        void onPreferentialItemClick(PreferentialContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean data);
+        void onPreferentialItemClick(IBaseInfo data);
     }
 }

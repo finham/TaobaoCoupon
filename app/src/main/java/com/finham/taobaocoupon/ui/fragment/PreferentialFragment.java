@@ -1,8 +1,6 @@
 package com.finham.taobaocoupon.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.Rect;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseFragment;
+import com.finham.taobaocoupon.model.domain.IBaseInfo;
 import com.finham.taobaocoupon.model.domain.PreferentialContent;
 import com.finham.taobaocoupon.presenter.IPreferentialPagePresenter;
-import com.finham.taobaocoupon.presenter.ITicketPresenter;
-import com.finham.taobaocoupon.ui.activity.TicketActivity;
 import com.finham.taobaocoupon.ui.adapter.PreferentialAdapter;
 import com.finham.taobaocoupon.utils.PresenterManager;
+import com.finham.taobaocoupon.utils.TicketUtils;
 import com.finham.taobaocoupon.utils.ToastUtils;
 import com.finham.taobaocoupon.view.IPreferentialPageCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -44,7 +42,7 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
 
     @Override
     protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.title_fragment_layout,container,false);
+        return inflater.inflate(R.layout.title_fragment_layout, container, false);
     }
 
     @Override
@@ -140,18 +138,20 @@ public class PreferentialFragment extends BaseFragment implements IPreferentialP
     }
 
     @Override
-    public void onPreferentialItemClick(PreferentialContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean item) {
-        String title = item.getTitle();
+    public void onPreferentialItemClick(IBaseInfo item) {
+        //String title = item.getTitle();
         //这是商品详情的地址，我们要的是领券的地址
         //String url = item.getClick_url();
         //这个url就是领券的地址
-        String url = item.getCoupon_click_url();
-        if (TextUtils.isEmpty(url)) {
-            url = item.getClick_url(); //有一些商品可能没有券，那么就得做这样的预防case
-        }
-        String cover = item.getPict_url();
-        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
-        ticketPresenter.getTicket(title, url, cover);
-        startActivity(new Intent(requireActivity(), TicketActivity.class));
+//        String url = item.getCoupon_click_url();
+//        if (TextUtils.isEmpty(url)) {
+//            url = item.getClick_url(); //有一些商品可能没有券，那么就得做这样的预防case
+//        }
+//        String cover = item.getPict_url();
+//        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
+//        ticketPresenter.getTicket(title, url, cover);
+//        startActivity(new Intent(requireActivity(), TicketActivity.class));
+        TicketUtils.toTicketPage(requireContext(), item);   //这样就实现封装了！
+        //item不是IBaseInfo咋办呢？好办呀，让PreferentialContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean实现IBaseInfo接口呗~
     }
 }

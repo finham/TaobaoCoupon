@@ -1,8 +1,6 @@
 package com.finham.taobaocoupon.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.Rect;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.finham.taobaocoupon.R;
 import com.finham.taobaocoupon.base.BaseFragment;
+import com.finham.taobaocoupon.model.domain.IBaseInfo;
 import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
 import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
-import com.finham.taobaocoupon.presenter.ITicketPresenter;
-import com.finham.taobaocoupon.ui.activity.TicketActivity;
 import com.finham.taobaocoupon.ui.adapter.SelectedCategoryAdapter;
 import com.finham.taobaocoupon.ui.adapter.SelectedContentAdapter;
 import com.finham.taobaocoupon.utils.DensityUtils;
 import com.finham.taobaocoupon.utils.PresenterManager;
+import com.finham.taobaocoupon.utils.TicketUtils;
 import com.finham.taobaocoupon.view.ISelectedPagerCallback;
 
 import butterknife.BindView;
@@ -71,7 +69,7 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
             }
         });
         mRight.setAdapter(mRightAdapter);
-        tv_bar.setText("精选");
+        tv_bar.setText(getResources().getString(R.string.text_selected_title));
     }
 
     @Override
@@ -147,16 +145,17 @@ public class SelectedFragment extends BaseFragment implements ISelectedPagerCall
     }
 
     @Override
-    public void onRightContentClick(SelectedContent.DataBean.TbkUatmFavoritesItemGetResponseBean.ResultsBean.UatmTbkItemBean data) {
-        //跳转到淘口令页面
-        String title = data.getTitle();
-        String url = data.getCoupon_click_url();
-        if (TextUtils.isEmpty(url)) {
-            url = data.getClick_url(); //有一些商品可能没有券，那么就得做这样的预防case
-        }
-        String cover = data.getPict_url();
-        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
-        ticketPresenter.getTicket(title, url, cover);
-        startActivity(new Intent(requireActivity(), TicketActivity.class));
+    public void onRightContentClick(IBaseInfo data) { //顺便将很长的参数也给简化了= = 。。。该怎么说，确实很巧妙很有实际意义
+//        //跳转到淘口令页面
+//        String title = data.getTitle();
+//        String url = data.getCoupon_click_url();
+//        if (TextUtils.isEmpty(url)) {
+//            url = data.getClick_url(); //有一些商品可能没有券，那么就得做这样的预防case
+//        }
+//        String cover = data.getPict_url();
+//        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
+//        ticketPresenter.getTicket(title, url, cover);
+//        startActivity(new Intent(requireActivity(), TicketActivity.class));
+        TicketUtils.toTicketPage(requireContext(),data);
     }
 }

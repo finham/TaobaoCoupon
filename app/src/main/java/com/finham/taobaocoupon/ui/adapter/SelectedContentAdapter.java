@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.finham.taobaocoupon.R;
+import com.finham.taobaocoupon.model.domain.IBaseInfo;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
 import com.finham.taobaocoupon.utils.Constants;
 
@@ -110,6 +111,6 @@ public class SelectedContentAdapter extends RecyclerView.Adapter<SelectedContent
     }
     
     public interface onRightContentClickListener{
-        void onRightContentClick(SelectedContent.DataBean.TbkUatmFavoritesItemGetResponseBean.ResultsBean.UatmTbkItemBean data);
+        void onRightContentClick(IBaseInfo data);
     }
 }

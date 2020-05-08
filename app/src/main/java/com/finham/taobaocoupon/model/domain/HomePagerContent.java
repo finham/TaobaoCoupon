@@ -63,7 +63,7 @@ public class HomePagerContent {
                 '}';
     }
 
-    public static class DataBean {
+    public static class DataBean implements IBaseInfo {
         /**
          * category_id : 50013196
          * category_name : null
@@ -296,8 +296,18 @@ public class HomePagerContent {
             this.small_images = small_images;
         }
 
+        @Override
+        public String getCover() {
+            return pict_url;
+        }
+
         public String getTitle() {
             return title;
+        }
+
+        @Override
+        public String getUrl() {
+            return coupon_click_url == null ? click_url : coupon_click_url;
         }
 
         public void setTitle(String title) {
