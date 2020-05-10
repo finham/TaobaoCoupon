@@ -1,14 +1,14 @@
 package com.finham.taobaocoupon.presenter;
 
 import com.finham.taobaocoupon.base.IBasePresenter;
-import com.finham.taobaocoupon.view.ISearchViewCallback;
+import com.finham.taobaocoupon.view.ISearchPageCallback;
 
 /**
  * User: Fin
  * Date: 2020/5/10
  * Time: 13:21
  */
-public interface ISearchPresenter extends IBasePresenter<ISearchViewCallback> {
+public interface ISearchPresenter extends IBasePresenter<ISearchPageCallback> {
     //获取历史搜索记录
     void getHistory();
     //删除历史搜索记录

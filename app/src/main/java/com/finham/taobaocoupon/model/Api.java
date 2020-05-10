@@ -3,6 +3,7 @@ package com.finham.taobaocoupon.model;
 import com.finham.taobaocoupon.model.domain.Category;
 import com.finham.taobaocoupon.model.domain.HomePagerContent;
 import com.finham.taobaocoupon.model.domain.PreferentialContent;
+import com.finham.taobaocoupon.model.domain.SearchRecommend;
 import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
 import com.finham.taobaocoupon.model.domain.Ticket;
@@ -49,4 +50,7 @@ public interface Api {
      */
     @GET//("onSell/{page}") //可以这样写，也可以直接用@Url在参数中（形参）
     Call<PreferentialContent> getPreferentialContent(@Url String url);
+
+    @GET("search/recommend")
+    Call<SearchRecommend> getRecommendWords();
 }

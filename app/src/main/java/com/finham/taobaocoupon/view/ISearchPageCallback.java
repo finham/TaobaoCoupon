@@ -2,6 +2,7 @@ package com.finham.taobaocoupon.view;
 
 import com.finham.taobaocoupon.base.IBaseCallback;
 import com.finham.taobaocoupon.model.domain.SearchContent;
+import com.finham.taobaocoupon.model.domain.SearchRecommend;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Date: 2020/5/10
  * Time: 13:24
  */
-public interface ISearchViewCallback extends IBaseCallback {
+public interface ISearchPageCallback extends IBaseCallback {
     //写一个View的callback之前你要先想想有什么时候需要改变界面UI的操作和时刻，然后写对应的代码即可！
 
     //历史搜索已加载（更完善的话应该考虑摆放的优先级等等，这里按最简单的处理）
@@ -29,5 +30,5 @@ public interface ISearchViewCallback extends IBaseCallback {
 
     void onLoadMoreEmpty();
 
-    void onRecommendWordsLoaded(List<String> words);
+    void onRecommendWordsLoaded(List<SearchRecommend.DataBean> words);
 }
