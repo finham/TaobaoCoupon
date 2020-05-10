@@ -25,6 +25,7 @@ public class SearchPresenterImpl implements ISearchPresenter {
     private ISearchPageCallback mSearchPageCallback;
     //搜索的当前页，要传入当参数用的
     private int mCurrentPage = DEFAULT_PAGE;
+    private String mCurrentKeyword;
 
     public SearchPresenterImpl() {
         RetrofitManager manager = RetrofitManager.getInstance();
@@ -48,6 +49,7 @@ public class SearchPresenterImpl implements ISearchPresenter {
         if (mSearchPageCallback != null) {
             mSearchPageCallback.onLoading();
         }
+        mCurrentKeyword = keyword;
         Call<SearchContent> task = mApi.search(mCurrentPage, keyword);
         task.enqueue(new Callback<SearchContent>() {
             @Override
@@ -58,7 +60,7 @@ public class SearchPresenterImpl implements ISearchPresenter {
                     if (mSearchPageCallback != null) {
                         try {
                             if (content == null || content.getData().getTbk_dg_material_optional_response().getResult_list()
-                                            .getMap_data().size() == 0) {
+                                    .getMap_data().size() == 0) {
                                 mSearchPageCallback.onEmpty();
                             } else {
                                 mSearchPageCallback.onSearchSuccess(content);
@@ -85,12 +87,45 @@ public class SearchPresenterImpl implements ISearchPresenter {
 
     @Override
     public void research() {
-
+        //重新搜索的逻辑
+        if (mCurrentKeyword == null) {
+            if (mSearchPageCallback != null) mSearchPageCallback.onEmpty();
+        } else {
+            search(mCurrentKeyword);
+        }
     }
 
     @Override
     public void loadMore() {
+        mCurrentKeyword = mCurrentKeyword + 1;
+        if (mCurrentKeyword != null) {
+            Call<SearchContent> task = mApi.search(mCurrentPage, mCurrentKeyword);
+            task.enqueue(new Callback<SearchContent>() {
+                @Override
+                public void onResponse(Call<SearchContent> call, Response<SearchContent> response) {
+                    int code = response.code();
+                    if (code == HttpURLConnection.HTTP_OK) {
+                        SearchContent body = response.body();
+                        if (mSearchPageCallback != null) {
+                            if (body == null || body.getData().getTbk_dg_material_optional_response().getResult_list().getMap_data().size() == 0)
+                                mSearchPageCallback.onLoadMoreEmpty();
+                            else {
+                                mSearchPageCallback.onLoadMoreSuccess(body);
+                            }
+                        }
+                    } else {
+                        if (mSearchPageCallback != null) mSearchPageCallback.onLoadMoreError();
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<SearchContent> call, Throwable t) {
+                    if (mSearchPageCallback != null) mSearchPageCallback.onLoadMoreError();
+                }
+            });
+        } else {
+            if (mSearchPageCallback != null) mSearchPageCallback.onEmpty();
+        }
     }
 
     @Override
