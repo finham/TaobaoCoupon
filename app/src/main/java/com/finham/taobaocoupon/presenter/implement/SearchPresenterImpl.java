@@ -1,6 +1,7 @@
 package com.finham.taobaocoupon.presenter.implement;
 
 import com.finham.taobaocoupon.model.Api;
+import com.finham.taobaocoupon.model.domain.SearchContent;
 import com.finham.taobaocoupon.model.domain.SearchRecommend;
 import com.finham.taobaocoupon.presenter.ISearchPresenter;
 import com.finham.taobaocoupon.utils.RetrofitManager;
@@ -19,8 +20,11 @@ import retrofit2.Retrofit;
  * Time: 17:21
  */
 public class SearchPresenterImpl implements ISearchPresenter {
+    private static final int DEFAULT_PAGE = 0;
     private Api mApi;
     private ISearchPageCallback mSearchPageCallback;
+    //搜索的当前页，要传入当参数用的
+    private int mCurrentPage = DEFAULT_PAGE;
 
     public SearchPresenterImpl() {
         RetrofitManager manager = RetrofitManager.getInstance();
@@ -40,7 +44,43 @@ public class SearchPresenterImpl implements ISearchPresenter {
 
     @Override
     public void search(String keyword) {
+        //在search操作时需要动态更新状态。注意是否要动态更新状态完全由需求决定，其他操作你也可以决定是否要动态更新状态。
+        if (mSearchPageCallback != null) {
+            mSearchPageCallback.onLoading();
+        }
+        Call<SearchContent> task = mApi.search(mCurrentPage, keyword);
+        task.enqueue(new Callback<SearchContent>() {
+            @Override
+            public void onResponse(Call<SearchContent> call, Response<SearchContent> response) {
+                int code = response.code();
+                if (code == HttpURLConnection.HTTP_OK) {
+                    SearchContent content = response.body();
+                    if (mSearchPageCallback != null) {
+                        try {
+                            if (content == null || content.getData().getTbk_dg_material_optional_response().getResult_list()
+                                            .getMap_data().size() == 0) {
+                                mSearchPageCallback.onEmpty();
+                            } else {
+                                mSearchPageCallback.onSearchSuccess(content);
+                            }
+                        } catch (NullPointerException e) {
+                            mSearchPageCallback.onEmpty();
+                        }
+                    }
+                } else {
+                    if (mSearchPageCallback != null) {
+                        mSearchPageCallback.onError();
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<SearchContent> call, Throwable t) {
+                if (mSearchPageCallback != null) {
+                    mSearchPageCallback.onError();
+                }
+            }
+        });
     }
 
     @Override

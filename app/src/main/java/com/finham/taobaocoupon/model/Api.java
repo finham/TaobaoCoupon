@@ -3,6 +3,7 @@ package com.finham.taobaocoupon.model;
 import com.finham.taobaocoupon.model.domain.Category;
 import com.finham.taobaocoupon.model.domain.HomePagerContent;
 import com.finham.taobaocoupon.model.domain.PreferentialContent;
+import com.finham.taobaocoupon.model.domain.SearchContent;
 import com.finham.taobaocoupon.model.domain.SearchRecommend;
 import com.finham.taobaocoupon.model.domain.SelectedCategory;
 import com.finham.taobaocoupon.model.domain.SelectedContent;
@@ -13,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -48,9 +50,13 @@ public interface Api {
     /**
      * 获取特惠内容
      */
-    @GET//("onSell/{page}") //可以这样写，也可以直接用@Url在参数中（形参）
+    @GET
+//("onSell/{page}") //可以这样写，也可以直接用@Url在参数中（形参）
     Call<PreferentialContent> getPreferentialContent(@Url String url);
 
     @GET("search/recommend")
     Call<SearchRecommend> getRecommendWords();
+
+    @GET("search")
+    Call<SearchContent> search(@Query("page") int page, @Query("keyword") String keyword);
 }
