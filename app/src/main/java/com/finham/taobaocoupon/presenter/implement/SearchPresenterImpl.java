@@ -114,12 +114,14 @@ public class SearchPresenterImpl implements ISearchPresenter {
                             }
                         }
                     } else {
+                        mCurrentPage--;
                         if (mSearchPageCallback != null) mSearchPageCallback.onLoadMoreError();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<SearchContent> call, Throwable t) {
+                    mCurrentPage--;
                     if (mSearchPageCallback != null) mSearchPageCallback.onLoadMoreError();
                 }
             });
