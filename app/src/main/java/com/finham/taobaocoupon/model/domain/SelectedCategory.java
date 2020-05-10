@@ -65,7 +65,6 @@ public class SelectedCategory {
          * favorites_id : 19876595
          * favorites_title : 程序员必备
          */
-
         private int type;
         private int favorites_id;
         private String favorites_title;
