@@ -3,11 +3,13 @@ package com.finham.taobaocoupon.utils;
 import com.finham.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.finham.taobaocoupon.presenter.IHomePresenter;
 import com.finham.taobaocoupon.presenter.IPreferentialPagePresenter;
+import com.finham.taobaocoupon.presenter.ISearchPresenter;
 import com.finham.taobaocoupon.presenter.ISelectedPagerPresenter;
 import com.finham.taobaocoupon.presenter.ITicketPresenter;
 import com.finham.taobaocoupon.presenter.implement.CategoryPagerPresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.HomePresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.PreferentialPagePresenterImpl;
+import com.finham.taobaocoupon.presenter.implement.SearchPresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.SelectedPagerPresenterImpl;
 import com.finham.taobaocoupon.presenter.implement.TicketPresenterImpl;
 
@@ -22,6 +24,12 @@ public class PresenterManager {
     private ITicketPresenter mTicketPresenter;
     private ISelectedPagerPresenter mSelectedPagerPresenter;
     private IPreferentialPagePresenter mPreferentialPagePresenter;
+
+    public ISearchPresenter getSearchPresenter() {
+        return mSearchPresenter;
+    }
+
+    private ISearchPresenter mSearchPresenter;
 
     public ICategoryPagerPresenter getCategoryPagerPresenter() {
         return mCategoryPagerPresenter;
@@ -59,6 +67,7 @@ public class PresenterManager {
         mTicketPresenter = new TicketPresenterImpl();
         mSelectedPagerPresenter = new SelectedPagerPresenterImpl();
         mPreferentialPagePresenter = new PreferentialPagePresenterImpl();
+        mSearchPresenter = new SearchPresenterImpl();
     }
 
 }

@@ -82,7 +82,7 @@ public class SearchPresenterImpl implements ISearchPresenter {
             histories = histories.subList(0, 10);
         }
         histories.add(history);
-        mJsonCacheUtils.save(KEY_HISTORY, histories);
+        mJsonCacheUtils.save(KEY_HISTORY, searchHistory); //不应该存List，而应该存SearchHistory类对象
     }
 
 
