@@ -52,7 +52,7 @@ public class JsonCacheUtils {
         mSharedPreferences.edit().remove(key).apply();
     }
 
-    public <T extends Class> T getValue(String key, Class<T> clazz) {
+    public <T> T getValue(String key, Class<T> clazz) {  //这种泛型第一次用，迷茫。。
         String cache = mSharedPreferences.getString(key, "");
         CacheWithDuration cacheWithDuration = mGson.fromJson(cache, CacheWithDuration.class);
         long time = cacheWithDuration.getDuration();

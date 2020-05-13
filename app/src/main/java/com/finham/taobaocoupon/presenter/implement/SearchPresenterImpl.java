@@ -2,12 +2,16 @@ package com.finham.taobaocoupon.presenter.implement;
 
 import com.finham.taobaocoupon.model.Api;
 import com.finham.taobaocoupon.model.domain.SearchContent;
+import com.finham.taobaocoupon.model.domain.SearchHistory;
 import com.finham.taobaocoupon.model.domain.SearchRecommend;
 import com.finham.taobaocoupon.presenter.ISearchPresenter;
+import com.finham.taobaocoupon.utils.JsonCacheUtils;
 import com.finham.taobaocoupon.utils.RetrofitManager;
 import com.finham.taobaocoupon.view.ISearchPageCallback;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,22 +30,61 @@ public class SearchPresenterImpl implements ISearchPresenter {
     //搜索的当前页，要传入当参数用的
     private int mCurrentPage = DEFAULT_PAGE;
     private String mCurrentKeyword;
+    private static final String KEY_HISTORY = "key_history";
+    private JsonCacheUtils mJsonCacheUtils;
 
     public SearchPresenterImpl() {
         RetrofitManager manager = RetrofitManager.getInstance();
         Retrofit retrofit = manager.getRetrofit();
         mApi = retrofit.create(Api.class);
+        mJsonCacheUtils = JsonCacheUtils.getInstance();
     }
 
     @Override
     public void getHistory() {
-
+        SearchHistory value = mJsonCacheUtils.getValue(KEY_HISTORY, SearchHistory.class);
+        if (value.getHistories() != null && value.getHistories().size() != 0) {
+            if (mSearchPageCallback != null) {
+                mSearchPageCallback.onHistoryLoaded(value.getHistories());
+            }
+        }
     }
 
     @Override
     public void deleteHistory() {
-
+        mJsonCacheUtils.remove(KEY_HISTORY);
     }
+
+    /**
+     * 添加历史记录
+     *
+     * @param history
+     */
+    private void saveHistory(String history) {
+        //如果已经存在了就删除重新添加，并且对个数进行限制
+        SearchHistory searchHistory = mJsonCacheUtils.getValue(history, SearchHistory.class);
+        List<String> histories = null;
+        if (searchHistory != null && searchHistory.getHistories() != null) {
+            histories = searchHistory.getHistories();
+            if (histories.contains(history)) {
+                histories.remove(history);
+            }
+        }
+        //去重完成
+        if (histories == null) {
+            histories = new ArrayList<>();
+        }
+        if (searchHistory == null) {
+            searchHistory = new SearchHistory();
+        }
+        searchHistory.setHistories(histories);
+        if (histories.size() > 10) {
+            histories = histories.subList(0, 10);
+        }
+        histories.add(history);
+        mJsonCacheUtils.save(KEY_HISTORY, histories);
+    }
+
 
     @Override
     public void search(String keyword) {
@@ -49,6 +92,7 @@ public class SearchPresenterImpl implements ISearchPresenter {
         if (mSearchPageCallback != null) {
             mSearchPageCallback.onLoading();
         }
+        saveHistory(keyword);
         mCurrentKeyword = keyword;
         Call<SearchContent> task = mApi.search(mCurrentPage, keyword);
         task.enqueue(new Callback<SearchContent>() {
