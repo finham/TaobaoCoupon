@@ -25,6 +25,7 @@ public class TextFlowLayout extends ViewGroup {
     private float mItemVerticalSpace = 10;
     //private List<View> mSingleLine;
     private List<List<View>> mAllLines = new ArrayList<>();
+    private onFlowItemClickListener mListener;
 
     //暴露出去给外面设置
     public float getItemHorizontalSpace() {
@@ -68,6 +69,12 @@ public class TextFlowLayout extends ViewGroup {
             //LayoutInflater.from(getContext()).inflate(R.layout.flow_text_view, this, true) 等价于下面两句，注意第三个参数是否黏贴到root中
             TextView item = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.flow_text_view, this, false);
             item.setText("电脑");
+            item.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onFlowItemClick(s);
+                }
+            });
             addView(item);
         }
     }
@@ -146,5 +153,13 @@ public class TextFlowLayout extends ViewGroup {
             }
             topOffset += line.get(0).getMeasuredHeight() + mItemVerticalSpace;
         }
+    }
+
+    public void setOnFlowItemClickListener(onFlowItemClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public interface onFlowItemClickListener {
+        void onFlowItemClick(String text); //把点击的字传进去
     }
 }
