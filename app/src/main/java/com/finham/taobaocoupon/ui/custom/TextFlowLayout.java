@@ -23,7 +23,7 @@ public class TextFlowLayout extends ViewGroup {
     private List<String> mTextList;
     private float mItemHorizontalSpace = 10;
     private float mItemVerticalSpace = 10;
-    private List<View> mSingleLine;
+    //private List<View> mSingleLine;
     private List<List<View>> mAllLines = new ArrayList<>();
 
     //暴露出去给外面设置
@@ -75,6 +75,8 @@ public class TextFlowLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        List<View> mSingleLine = null;
+        mAllLines.clear();
         int selfWidth = MeasureSpec.getSize(widthMeasureSpec) - getPaddingLeft() - getPaddingRight();
         //先测量孩子
         //那么要先干啥呢？当然是遍历拿到子View啦！
