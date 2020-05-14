@@ -3,4 +3,9 @@
     <declare-styleable name="AutoLoopViewPager">
         <attr name="interval" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="FlowTextStyle">
+        <attr name="horizontalSpace" format="dimension" />
+        <attr name="verticalSpace" format="dimension" />
+    </declare-styleable>
 </resources>
