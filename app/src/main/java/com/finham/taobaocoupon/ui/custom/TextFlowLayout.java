@@ -81,6 +81,10 @@ public class TextFlowLayout extends ViewGroup {
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
+            if (childView.getVisibility() != VISIBLE) {
+                //不需要进行测量，自然也就不会添加进List中。注意continue的用法
+                continue;
+            }
             //测量前
             LogUtils.d(TextFlowLayout.class, "before height-->" + childView.getMeasuredHeight()); //getHeight是onLayout确定的
             //进行测量
@@ -114,12 +118,31 @@ public class TextFlowLayout extends ViewGroup {
             }
         }
         //测量自己，去计算行数*行高度+间距
-        int selfHeight = (int) (mAllLines.size() * getChildAt(0).getMeasuredHeight() + (mAllLines.size() + 1) * mItemVerticalSpace +0.5f); //补0.5f为了四舍五入
-        setMeasuredDimension(selfWidth,selfHeight);
+        int selfHeight = (int) (mAllLines.size() * getChildAt(0).getMeasuredHeight() + (mAllLines.size() + 1) * mItemVerticalSpace + 0.5f); //补0.5f为了四舍五入
+        setMeasuredDimension(selfWidth, selfHeight);
     }
 
     @Override
     protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
+        //演示一下该如何摆放！一步步拆解后自然就看得懂了。
+        /**View childOne = getChildAt(0);
+         childOne.layout(0, 0, childOne.getMeasuredWidth(), childOne.getMeasuredHeight()); //左、顶、右、底
 
+         View childTwo = getChildAt(1);
+         childTwo.layout(childOne.getRight() + (int) mItemHorizontalSpace, 0,
+         childOne.getRight() + (int) mItemHorizontalSpace + childTwo.getMeasuredWidth(), childTwo.getMeasuredHeight());**/
+
+        int topOffset = (int) mItemVerticalSpace;
+        //通过上面两个的拆解，其实已经知道该如何摆放了。那这样一个个写肯定是不行的，必须借助for循环！
+        for (List<View> line : mAllLines) {
+            //测量的时候已经分好行了，那至于你要把分行拿到onLayout里来写也可以。
+            int leftOffset = (int) mItemHorizontalSpace;
+            for (View view : line) {
+                //for双循环
+                view.layout(leftOffset, topOffset, leftOffset + view.getMeasuredWidth(), topOffset + view.getMeasuredHeight());
+                leftOffset += view.getMeasuredWidth() + mItemHorizontalSpace;
+            }
+            topOffset += line.get(0).getMeasuredHeight() + mItemVerticalSpace;
+        }
     }
 }
