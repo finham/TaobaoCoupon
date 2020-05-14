@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.finham.taobaocoupon.R;
+import com.finham.taobaocoupon.utils.LogUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +23,8 @@ public class TextFlowLayout extends ViewGroup {
     private List<String> mTextList;
     private float mItemHorizontalSpace = 10;
     private float mItemVerticalSpace = 10;
+    private List<View> mSingleLine;
+    private List<List<View>> mAllLines = new ArrayList<>();
 
     //暴露出去给外面设置
     public float getItemHorizontalSpace() {
@@ -65,6 +70,52 @@ public class TextFlowLayout extends ViewGroup {
             item.setText("电脑");
             addView(item);
         }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int selfWidth = MeasureSpec.getSize(widthMeasureSpec) - getPaddingLeft() - getPaddingRight();
+        //先测量孩子
+        //那么要先干啥呢？当然是遍历拿到子View啦！
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View childView = getChildAt(i);
+            //测量前
+            LogUtils.d(TextFlowLayout.class, "before height-->" + childView.getMeasuredHeight()); //getHeight是onLayout确定的
+            //进行测量
+            measureChild(childView, widthMeasureSpec, heightMeasureSpec);
+            //测量后
+            LogUtils.d(TextFlowLayout.class, "after height-->" + childView.getMeasuredHeight());
+            if (mSingleLine == null) {
+                mSingleLine = new ArrayList<>();
+                mSingleLine.add(childView);
+                mAllLines.add(mSingleLine);
+            } else {
+                //判断单行还能不能继续添加得了
+                //将所有已经添加进来的View的宽度相加 + 每个View之间的间距 + childView.getMeasuredWidth -->判断是否超出ViewGroup的宽度
+                int totalWidth = 0;
+                for (View view : mSingleLine) {
+                    totalWidth += view.getMeasuredWidth();
+                    //+= 是简写，a += 1就是a = a+1 | =+并不是简写，a =+ a直接对a的赋值，±符号代表的是正负（完全可以省略不写），即a =+ b其实就是a = b。
+                }
+                totalWidth += (mSingleLine.size() + 1) * mItemHorizontalSpace;
+                totalWidth += childView.getMeasuredWidth(); //加的这个是准备新添加进来的
+                //我们这里只需要size，不需要mode。应该是屏幕宽度，因为我们使用match_parent
+                if (totalWidth <= selfWidth) {
+                    //可以添加
+                    mSingleLine.add(childView);
+                } else {
+                    //不能添加，新创建一行
+                    mSingleLine = new ArrayList<>();
+                    mSingleLine.add(childView);
+                    mAllLines.add(mSingleLine);
+                }
+            }
+        }
+        //测量自己，去计算行数*行高度+间距
+        int selfHeight = (int) (mAllLines.size() * getChildAt(0).getMeasuredHeight() + (mAllLines.size() + 1) * mItemVerticalSpace +0.5f); //补0.5f为了四舍五入
+        setMeasuredDimension(selfWidth,selfHeight);
     }
 
     @Override
